@@ -12,10 +12,10 @@ from bitalg.visualizer.main import Visualizer
 import math
 
 def func():
-    points = [(3,4),(2,1),(3,8)]
+    points = [(3,4),(1,1),(3,8)]
     vis = Visualizer()
     vis.add_point(points)
     vis.show()
 
-if __name__ == "main":
+if __name__ == "__main__":
     func()
