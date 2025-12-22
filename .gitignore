@@ -3,3 +3,9 @@ train/
 .idea/
 dist/
 *.egg-info
+*.csv
+*.zip
+*.gif
+*.txt
+*.png
+*.PNG
