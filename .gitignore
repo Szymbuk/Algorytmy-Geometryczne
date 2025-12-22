@@ -3,3 +3,4 @@ train/
 .idea/
 dist/
 *.egg-info
+*.ipynb
