@@ -1,12 +1,12 @@
+from __future__ import annotations
 import math
-
-
 from bitalg.Projekt.Point import Point
 from bitalg.Projekt.Section import Section
 import numpy as np
 
 
 class Triangle:
+    # Tworząc trójkąt, należy się upewnić, że istnieją odcinki zdefiniowane wcześniej między podanymi punktami.
     def __init__(self, p1: Point | Section, p2: Point | Section, p3: Point | Section):
         self.__points = set()
         self.__edges = set()

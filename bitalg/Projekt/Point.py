@@ -1,4 +1,7 @@
+import math
 from typing import TYPE_CHECKING
+
+
 
 if TYPE_CHECKING:
     from bitalg.Projekt.Section import Section
@@ -29,6 +32,11 @@ class Point:
 
     def add_edge(self,section:'Section') -> None:
         self.__edges.add(section)
+
+    def in_circle(self,point: 'Point', r: float, eps: float = 1e-10) -> bool:
+        return math.sqrt((self.__x-point.get_x())**2+ (self.__y-point.get_y())**2 ) - r <eps
+
+
 
     def  __repr__(self) -> str:
         return "Point: ({},{})".format(self.__x,self.__y)
