@@ -1,21 +1,24 @@
 import math
 from typing import TYPE_CHECKING
+import itertools
 
 
 
 from bitalg.Projekt.utils.orient import orient
 
 if TYPE_CHECKING:
-    from bitalg.Projekt.utils.Section import Section
-    from bitalg.Projekt.utils.Triangle import Triangle
+    from bitalg.Projekt.utils.classes.Section import Section
+    from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 
 class Point:
 
-    def __init__(self, x: float, y: float, point_id: int = 1):
+    id_iter = itertools.count(start=1)
+
+    def __init__(self, x: float, y: float):
         self.__x= x
         self.__y = y
-        self.__id = point_id
+        self.__id = next(self.id_iter)
         self.__edges = set()
 
     def get_x(self) -> float:
@@ -24,7 +27,7 @@ class Point:
     def get_y(self) -> float:
         return self.__y
 
-    def get_cords(self) -> (float,float):
+    def get_cords(self) -> tuple[float,float]:
         return self.__x, self.__y
 
     def get_id(self) -> int:
@@ -45,7 +48,8 @@ class Point:
         return -eps<orient(start,end,self)<eps
 
     def __eq__(self, other: 'Point'):
-        return self.__x == other.get_x() and self.__y == other.get_y() and self.__id == other.get_id()
+        if self.__id == other.get_id(): return True
+        return self.__x == other.get_x() and self.__y == other.get_y()
 
     def __hash__(self):
         return hash(self.__x) + hash(self.__y) + hash(self.__id)

@@ -1,7 +1,7 @@
 from __future__ import annotations
 import math
-from bitalg.Projekt.utils.Point import Point
-from bitalg.Projekt.utils.Section import Section
+from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Section import Section
 import numpy as np
 
 
@@ -93,7 +93,7 @@ class Triangle:
         return res
 
 
-    def define_circle(self) -> (Point, float):
+    def define_circle(self) -> tuple[Point, float]:
         # korzystając z równania okręgu x^2 + y^2 + Dx + Ey + F = 0
 
         p1,p2,p3 = self.__points
@@ -116,7 +116,7 @@ class Triangle:
 
         r = math.sqrt(x0**2 + y0**2 - F)
 
-        return Point(x0,y0, -10),r
+        return Point(x0,y0),r
 
     def  __repr__(self) -> str:
         temp = self.get_list_edges()

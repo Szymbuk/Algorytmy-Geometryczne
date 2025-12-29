@@ -1,5 +1,5 @@
-from bitalg.Projekt.utils.Point import Point
-from bitalg.Projekt.utils.Triangle import Triangle
+from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Triangle import Triangle
 from bitalg.Projekt.utils.orient import orient
 
 

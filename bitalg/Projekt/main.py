@@ -1,8 +1,8 @@
 import sys, os
 
-from bitalg.Projekt.utils.Point import Point
-from bitalg.Projekt.utils.Section import Section
-from bitalg.Projekt.utils.Triangle import Triangle
+from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Section import Section
+from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 from bitalg.visualizer.main import Visualizer

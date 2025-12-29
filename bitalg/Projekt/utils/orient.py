@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from bitalg.Projekt.utils.Point import Point
-    from bitalg.Projekt.utils.Section import Section
+    from bitalg.Projekt.utils.classes.Point import Point
+    from bitalg.Projekt.utils.classes.Section import Section
 
 
 def orient(*args) -> float:
@@ -19,10 +19,10 @@ def orient(*args) -> float:
             section = args[1]
             p3 = args[0]
         else:
-            raise ValueError("Provided {len(args)} arguments, expected Section and Point ")
+            raise ValueError(f"Provided {len(args)} arguments, expected Section and Point ")
         p1,p2 = section.get_tuple_ends()
     else:
-        raise ValueError("Provided {len(args)} arguments, expected 2 or 3 arguments")
+        raise ValueError(f"Provided {len(args)} arguments, expected 2 or 3 arguments")
 
     ax, ay = p1.get_cords()
     bx, by = p2.get_cords()

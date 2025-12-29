@@ -1,19 +1,22 @@
-from bitalg.Projekt.utils.Point import Point
+from bitalg.Projekt.utils.classes.Point import Point
 from typing import TYPE_CHECKING
 
-
+import itertools
 
 
 if TYPE_CHECKING:
-    from bitalg.Projekt.utils.Triangle import Triangle
+    from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 
 class Section:
-    def __init__(self, p1: Point, p2: Point, section_id: int =1):
+
+    id_iter = itertools.count(start=0)
+
+    def __init__(self, p1: Point, p2: Point):
         self.__ends = set()
         self.__ends.add(p1)
         self.__ends.add(p2)
-        self.__id = section_id
+        self.__id = next(self.id_iter)
         self.__triangles = set()
         p1.add_edge(self)
         p2.add_edge(self)
@@ -46,6 +49,7 @@ class Section:
         return "Section: ({})".format(self.get_tuple_ends())
 
     def __eq__(self, other: 'Section'):
+        if self.get_id() == other.get_id(): return True
         p1, p2 = self.get_tuple_ends()
         p3, p4 = other.get_tuple_ends()
         return (p1==p3 and p2==p4) or (p1==p4 and p2==p3)
