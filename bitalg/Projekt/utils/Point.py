@@ -3,13 +3,16 @@ from typing import TYPE_CHECKING
 
 
 
+from bitalg.Projekt.utils.orient import orient
+
 if TYPE_CHECKING:
-    from bitalg.Projekt.Section import Section
+    from bitalg.Projekt.utils.Section import Section
+    from bitalg.Projekt.utils.Triangle import Triangle
 
 
 class Point:
 
-    def __init__(self, x: float, y: float, point_id: int):
+    def __init__(self, x: float, y: float, point_id: int = 1):
         self.__x= x
         self.__y = y
         self.__id = point_id
@@ -36,8 +39,18 @@ class Point:
     def in_circle(self,point: 'Point', r: float, eps: float = 1e-10) -> bool:
         return math.sqrt((self.__x-point.get_x())**2+ (self.__y-point.get_y())**2 ) - r <eps
 
+    def on_section(self,section: 'Section') -> bool:
+        start,end = list(section.get_ends())
+        eps = 10e-14
+        return -eps<orient(start,end,self)<eps
 
+    def __eq__(self, other: 'Point'):
+        return self.__x == other.get_x() and self.__y == other.get_y() and self.__id == other.get_id()
+
+    def __hash__(self):
+        return hash(self.__x) + hash(self.__y) + hash(self.__id)
 
     def  __repr__(self) -> str:
         return "Point: ({},{})".format(self.__x,self.__y)
+
 
