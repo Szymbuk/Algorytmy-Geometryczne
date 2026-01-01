@@ -1,7 +1,6 @@
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-
 def get_initial_triangle(points: list[Point]) -> Triangle:
     """
     Dla danej chmury punktów zwraca trójkąt, w którym zawarte są wszystkie punkty chmury.

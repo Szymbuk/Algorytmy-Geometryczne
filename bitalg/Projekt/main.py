@@ -6,6 +6,8 @@ from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 from bitalg.visualizer.main import Visualizer
+from utils.generate_points import generate_uniform_points
+from delaunay import triangulate 
 
 def main():
     p1= Point(5, 4)
@@ -34,7 +36,8 @@ def main():
     vis.show_gif()
 
 def test():
-    pass
+    points = generate_uniform_points()
+    triangulate(points)
 
 if __name__ == "__main__":
     #main()
