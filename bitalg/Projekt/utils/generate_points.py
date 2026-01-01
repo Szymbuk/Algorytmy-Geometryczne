@@ -1,5 +1,5 @@
 import random
-from utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Point import Point
 
 def generate_uniform_points(left=-100, right=100, n=100):
     result = []

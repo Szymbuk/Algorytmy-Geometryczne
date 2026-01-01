@@ -36,8 +36,16 @@ def main():
     vis.show_gif()
 
 def test():
-    points = generate_uniform_points()
-    triangulate(points)
+    points = generate_uniform_points(-100,100,10)
+    triangles = triangulate(points)
+    print(triangles)
+    vis = Visualizer()
+    for point in points:
+        vis.add_point(point.get_cords(),color="red")
+    for triangle in triangles:
+        vis.add_polygon(triangle.get_list_points(), color = "blue", fill=False)
+    vis.show()
+
 
 if __name__ == "__main__":
     #main()

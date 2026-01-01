@@ -2,9 +2,9 @@ from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-from utils.search_triangulation import find_sec_in_T
+from bitalg.Projekt.utils.search_triangulation import find_sec_in_T
 
-def turned_points(sec: Section) -> tuple[Point, Point, Point, Point]:
+def turned_points(sec: Section) -> set[Point]:
     """
     Zwraca punkty, które byłyby końcami odcinka po jego przekręceniu
     """
@@ -28,6 +28,9 @@ def turn(sec: Section) -> tuple[Point, Point]:
 
     p1, p2 = tuple(sec_pts)
     p3, p4 = tuple(new_sec_pts)
+
+    p1.remove_edge(sec)
+    p2.remove_edge(sec)
 
     t1.new_points((p1, p3, p4))
     t2.new_points((p2, p3, p4))

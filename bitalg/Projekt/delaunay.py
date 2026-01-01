@@ -5,7 +5,7 @@ from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 from utils.orient import orient
 from utils.initial_triangle import get_initial_triangle
-from utils.search_triangulation import find_triangle_containg_point
+from utils.search_triangulation import find_triangle_containing_point
 
 def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> bool:
     a, b, c = triangle.get_points()
@@ -24,7 +24,7 @@ def triangulate(p: list[Point]) -> list[Triangle]:
     n = len(p)
 
     for r in range(n):
-        triangle = find_triangle_containg_point(p[r], T, variant="JaW")
+        triangle = find_triangle_containing_point(p[r], T, variant="JaW")
         
         if is_point_on_triangle_edge(p[r], triangle):
             pass

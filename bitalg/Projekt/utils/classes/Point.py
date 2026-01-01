@@ -39,6 +39,9 @@ class Point:
     def add_edge(self,section:'Section') -> None:
         self.__edges.add(section)
 
+    def remove_edge(self,section:'Section')-> None:
+        self.__edges.remove(section)
+
     def in_circle(self,point: 'Point', r: float, eps: float = 1e-10) -> bool:
         return math.sqrt((self.__x-point.get_x())**2+ (self.__y-point.get_y())**2 ) - r <eps
 
