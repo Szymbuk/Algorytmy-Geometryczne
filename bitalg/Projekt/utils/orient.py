@@ -4,7 +4,6 @@ if TYPE_CHECKING:
     from bitalg.Projekt.utils.classes.Point import Point
     from bitalg.Projekt.utils.classes.Section import Section
 
-
 def orient(*args) -> float:
     # używamy własnej implementacji wyznacznika 2x2
 
@@ -29,5 +28,3 @@ def orient(*args) -> float:
     cx, cy = p3.get_cords()
     det = (ax - cx) * (by - cy) - (ay - cy) * (bx - cx)
     return det
-
-

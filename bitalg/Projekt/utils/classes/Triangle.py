@@ -77,7 +77,7 @@ class Triangle:
 
     def get_list_points(self):
         res = []
-        for  x in list(self.__points):
+        for x in list(self.__points):
             res.append(x.get_cords())
         return res
 
