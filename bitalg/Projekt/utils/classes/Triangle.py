@@ -106,7 +106,7 @@ class Triangle:
 
 
         D,E,F = x
-        print(D,E,F)
+        #print(D,E,F)
 
         x0 = -D/2
         y0 = -E/2
@@ -116,7 +116,7 @@ class Triangle:
         return Point(x0,y0),r
 
     def new_points(self, points: tuple[Point, Point, Point]):
-        self.__points = list[points]
+        self.__points = list(points)
         self.__edges = set()
         p1, p2, p3 = points
         s1,s2,s3 = Section(p1,p2),Section(p2,p3),Section(p3,p1)

@@ -1,10 +1,10 @@
 import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 from bitalg.visualizer.main import Visualizer
 
 def main():
@@ -33,7 +33,9 @@ def main():
     vis.show()
     vis.show_gif()
 
-
+def test():
+    pass
 
 if __name__ == "__main__":
-    main()
+    #main()
+    test()

@@ -6,6 +6,12 @@ from typing import Literal
 from utils.jump_and_walk import jump_and_walk_triangle_search
 
 def find_triangle_containg_point(point: Point, T: list[Triangle], variant: Literal["JaW", "ten drugi algorytm"]) -> Triangle:
+    """
+    Zwraca trójkąt triangulacji który zawiera dany punkt, możliwe są dwa warianty 
+    czyli dwa różne algorytmy znajdowania tego punktu:
+    "JaW" - Jump and Walk
+    "..." - ten drugi co go jeszcze nie ma
+    """
     if variant == "JaW":
         return jump_and_walk_triangle_search(point, T)
     else:
