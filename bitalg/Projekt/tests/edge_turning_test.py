@@ -11,17 +11,16 @@ def main():
     triangles = [Triangle(p1,p2,p4),Triangle(p4,p3,p1)]
     vis = Visualizer()
     vis.add_point([p1.get_cords(),p2.get_cords(),p3.get_cords(),p4.get_cords()],color="red")
-    vis.add_line_segment([s1.get_tuple_ends(),s2.get_tuple_ends(),s3.get_tuple_ends(),s4.get_tuple_ends(),s5.get_tuple_ends()],color="blue")
-    polygs = vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=True)
+
+    polygs = vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
     vis.show()
     print(triangles)
     print(is_legal(s5))
     if not is_legal(s5):
-        vis.add_line_segment(s5.get_tuple_ends(),color="white")
         turn(s5)
     print(triangles)
     vis.remove_figure(polygs)
-    vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=True)
+    vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
     vis.show()
 
 
