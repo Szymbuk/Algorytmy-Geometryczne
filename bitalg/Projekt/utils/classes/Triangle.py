@@ -43,7 +43,6 @@ class Triangle:
 
 
 
-
         elif isinstance(p1,Section) and isinstance(p2,Section) and isinstance(p3,Section):
             self.__edges.add(p1)
             self.__edges.add(p2)
@@ -73,7 +72,6 @@ class Triangle:
             # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
             self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
 
-
     def get_points(self) -> list[Point]:
         return self.__points
 
@@ -91,7 +89,6 @@ class Triangle:
         for x in list(self.__edges):
             res.append(x.get_tuple_ends())
         return res
-
 
     def define_circle(self) -> tuple[Point, float]:
         # korzystając z równania okręgu x^2 + y^2 + Dx + Ey + F = 0
@@ -117,6 +114,30 @@ class Triangle:
         r = math.sqrt(x0**2 + y0**2 - F)
 
         return Point(x0,y0),r
+
+    def new_points(self, points: tuple[Point, Point, Point]):
+        self.__points = list[points]
+        self.__edges = set()
+        p1, p2, p3 = points
+        s1,s2,s3 = Section(p1,p2),Section(p2,p3),Section(p3,p1)
+        p1.add_edge(s1)
+        p1.add_edge(s3)
+        p2.add_edge(s1)
+        p2.add_edge(s2)
+        p3.add_edge(s2)
+        p3.add_edge(s3)
+
+        for edge in p1.get_edges():
+            if p2 in edge.get_ends() or p3 in edge.get_ends():
+                edge.add_triangle(self)
+                self.__edges.add(edge)
+
+
+        for edge in p2.get_edges():
+            if p3 in edge.get_ends():
+                edge.add_triangle(self)
+                self.__edges.add(edge)
+        
 
     def  __repr__(self) -> str:
         temp = self.get_list_edges()

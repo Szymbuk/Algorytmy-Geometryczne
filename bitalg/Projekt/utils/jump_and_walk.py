@@ -69,7 +69,6 @@ def jump_and_walk_triangle_search(point: Point,triangles: list[Triangle]) -> Tri
 
 
 
-
 def jump_and_walk_next(point: Point,triangle :Triangle) -> Triangle:
     p1, p2, p3 = triangle.get_points()
     end = False

@@ -36,7 +36,7 @@ class Section:
             res.append(x.get_cords())
         return res
 
-    def get_triangle(self) -> set['Triangle']:
+    def get_triangles(self) -> set['Triangle']:
         return self.__triangles
 
     def get_id(self) -> int:

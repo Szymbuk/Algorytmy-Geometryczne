@@ -7,15 +7,14 @@ from bitalg.Projekt.utils.classes.Triangle import Triangle
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 from bitalg.visualizer.main import Visualizer
 
-
 def main():
-    p1= Point(5, 4, 1)
-    p2= Point(3, 0, 2)
-    p3 = Point(1, 7, 3)
+    p1= Point(5, 4)
+    p2= Point(3, 0)
+    p3 = Point(1, 7)
     print(p1)
-    sec1= Section(p1, p2, 1)
-    sec2 = Section(p2, p3, 2)
-    sec3= Section(p1, p3, 3)
+    sec1= Section(p1, p2)
+    sec2 = Section(p2, p3)
+    sec3= Section(p1, p3)
     print(sec1)
     t1 = Triangle(p1, p2, p3)
     print(t1)
@@ -33,6 +32,7 @@ def main():
     vis.add_line_segment(T1.get_list_edges(), color="red")
     vis.show()
     vis.show_gif()
+
 
 
 if __name__ == "__main__":

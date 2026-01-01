@@ -1,6 +1,6 @@
 import sys, os
 
-from bitalg.Projekt.utils.Jump_And_Walk_Algorithm import jump_and_walk_next
+from bitalg.Projekt.utils.jump_and_walk import jump_and_walk_next
 from bitalg.Projekt.utils.Point import Point
 from bitalg.Projekt.utils.Section import Section
 from bitalg.Projekt.utils.Triangle import Triangle
