@@ -37,7 +37,7 @@ def find_sec_in_T(points: tuple[Point, Point], T: list[Triangle]) -> Section:
     """
     p1,p2 = points
     for edge in p1.get_edges():
-        if p2 in edge.get_tuple_ends():
+        if p2.get_cords() in edge.get_tuple_ends():
             return edge
     raise LookupError("Odcinek nie należy do triangulacji")
 
