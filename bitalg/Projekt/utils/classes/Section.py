@@ -26,6 +26,12 @@ class Section:
         if len(self.__triangles) >2:
             raise ValueError("Only 2 triangles can be assigned to a single Section object")
 
+    def remove_triangle(self, triangle: 'Triangle'):
+        """
+        usuwa trójkąt z listy trójkątów krawędzi, jeżeli ten trójkąt do niej należy
+        """
+        if triangle in self.__triangles:
+            self.__triangles.remove(triangle)
 
     def get_ends(self) -> set[Point]:
         return self.__ends

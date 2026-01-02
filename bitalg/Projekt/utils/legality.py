@@ -32,6 +32,12 @@ def turn(sec: Section) -> tuple[Point, Point]:
     p1.remove_edge(sec)
     p2.remove_edge(sec)
 
+    # usuwam trójkąty z wszystkich ich krawędzi, odpowiednie krawędzie zostaną dodane przy wywołaniu new_points
+    for edge in t1.get_edges():
+        edge.remove_triangle(t1)
+    for edge in t2.get_edges():
+        edge.remove_triangle(t2)
+
     t1.new_points((p1, p3, p4))
     t2.new_points((p2, p3, p4))
 
@@ -52,6 +58,15 @@ def is_legal(sec: Section) -> bool:
     return not point.in_circle(center, radius)
 
 def legalize_edge(point: Point, sec: Section, T: list[Triangle]) -> None:
+    # trzeba dodać obsługę krawędzi "dopisanych" na początku algorytmu
+    # Czy potrzebujemy listy trójkątów?
+    # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
+    if len(sec.get_triangles())<2:
+        return
+    # print("legalise")
+    # print(point)
+    # print(sec)
+    # print(sec.get_triangles(),"\n\n")
     sec_pts = sec.get_ends()
     new_sec_pts = turned_points(sec)
 
@@ -63,8 +78,8 @@ def legalize_edge(point: Point, sec: Section, T: list[Triangle]) -> None:
     if not is_legal(sec):
         turn(sec)
 
-        sec1 = find_sec_in_T((i, k), T)
-        sec2 = find_sec_in_T((j, k), T)
+        sec1 = find_sec_in_T((i, k))
+        sec2 = find_sec_in_T((j, k))
 
         legalize_edge(point, sec1, T)
         legalize_edge(point, sec2, T)

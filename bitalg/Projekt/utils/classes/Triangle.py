@@ -84,7 +84,7 @@ class Triangle:
     def get_edges(self) -> set[Section]:
         return self.__edges
 
-    def get_list_edges(self):
+    def get_list_edges(self) -> list[Section]:
         res = []
         for x in list(self.__edges):
             res.append(x.get_tuple_ends())
@@ -137,6 +137,10 @@ class Triangle:
             if p3 in edge.get_ends():
                 edge.add_triangle(self)
                 self.__edges.add(edge)
+
+        if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
+            # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
+            self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
         
 
     def  __repr__(self) -> str:
