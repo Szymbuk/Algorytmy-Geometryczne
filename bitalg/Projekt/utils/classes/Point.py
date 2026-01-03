@@ -19,7 +19,7 @@ class Point:
         self.__x= x
         self.__y = y
         self.__id = next(self.id_iter)
-        self.__edges = set()
+        self.__edges: set['Section'] = set()
 
     def get_x(self) -> float:
         return self.__x
@@ -49,6 +49,7 @@ class Point:
         start,end = list(section.get_ends())
         eps = 10e-14
         return -eps<orient(start,end,self)<eps
+
 
     def __eq__(self, other: 'Point'):
         if self.__id == other.get_id(): return True

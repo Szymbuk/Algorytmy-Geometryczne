@@ -43,7 +43,7 @@ def test():
     for point in points:
         vis.add_point(point.get_cords(),color="red")
     for triangle in triangles:
-        vis.add_polygon(triangle.get_list_points(), color = "blue", fill=False)
+        vis.add_polygon(triangle.get_list_tuple_points(), color ="blue", fill=False)
     vis.show()
 
 

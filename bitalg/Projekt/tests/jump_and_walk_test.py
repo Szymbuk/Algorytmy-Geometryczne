@@ -48,7 +48,7 @@ def main():
 
     actual_triangle = triangles[4]
     while True:
-        drawn_triangle = vis.add_polygon(actual_triangle.get_list_points(),color="blue",fill=True)
+        drawn_triangle = vis.add_polygon(actual_triangle.get_list_tuple_points(), color="blue", fill=True)
         next_triangle = jump_and_walk_next(px,actual_triangle)
         vis.remove_figure(drawn_triangle)
         if next_triangle == actual_triangle:

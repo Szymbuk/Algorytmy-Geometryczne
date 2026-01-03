@@ -65,7 +65,7 @@ class Triangle:
             p3.add_triangle(self)
 
         else:
-            raise TypeError("Należy podać 3 punkty lub 3 odcinki")
+            raise TypeError("Należy podać 3 punkty lub 3 odcinki.\n Podano {},{},{}".format(p1.__class__.__name__,p2.__class__.__name__,p3.__class__.__name__))
 
 
         if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
@@ -75,7 +75,10 @@ class Triangle:
     def get_points(self) -> list[Point]:
         return self.__points
 
-    def get_list_points(self):
+    def get_list_tuple_points(self) -> list[tuple[int,int]]:
+        """
+        Zwraca listę punktów w postaci krotek ich współrzędnych
+        """
         res = []
         for x in list(self.__points):
             res.append(x.get_cords())
@@ -114,6 +117,13 @@ class Triangle:
         r = math.sqrt(x0**2 + y0**2 - F)
 
         return Point(x0,y0),r
+
+    def destroy(self):
+        """
+        Usuwa referencje z powiązanych krawędzi do danego trójkąta
+        """
+        for edge in self.__edges:
+            edge.remove_triangle(self)
 
     def new_points(self, points: tuple[Point, Point, Point]):
         self.__points = list(points)

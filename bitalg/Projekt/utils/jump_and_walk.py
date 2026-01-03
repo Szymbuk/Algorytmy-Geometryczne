@@ -99,7 +99,7 @@ def jump_and_walk_next(point: Point,triangle :Triangle) -> Triangle:
         return triangle
 
 
-    t1, t2 = list(edge.get_triangle())
+    t1, t2 = list(edge.get_triangles())
     if triangle == t1:
         triangle = t2
     else:

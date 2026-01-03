@@ -12,7 +12,7 @@ def test1():
     vis = Visualizer()
     vis.add_point([p1.get_cords(),p2.get_cords(),p3.get_cords(),p4.get_cords()],color="red")
 
-    polygs = vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
+    polygs = vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
     vis.show()
     print(triangles)
     print(is_legal(s5))
@@ -20,7 +20,7 @@ def test1():
         turn(s5)
     print(triangles)
     vis.remove_figure(polygs)
-    vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
+    vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
     vis.show()
 
 
@@ -31,14 +31,14 @@ def test2():
     vis = Visualizer()
     vis.add_point([p1.get_cords(),p2.get_cords(),p3.get_cords(),p4.get_cords()],color="red")
 
-    polygs = vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
+    polygs = vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
     vis.show()
     #print(triangles)
     #print(is_legal(s5))
     legalize_edge(p1,s5,triangles)
     #print(triangles)
     vis.remove_figure(polygs)
-    vis.add_polygon([t.get_list_points() for t in triangles],color="green",fill=False)
+    vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
     vis.show()
 
 

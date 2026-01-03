@@ -33,10 +33,12 @@ def turn(sec: Section) -> tuple[Point, Point]:
     p2.remove_edge(sec)
 
     # usuwam trójkąty z wszystkich ich krawędzi, odpowiednie krawędzie zostaną dodane przy wywołaniu new_points
-    for edge in t1.get_edges():
-        edge.remove_triangle(t1)
-    for edge in t2.get_edges():
-        edge.remove_triangle(t2)
+    # for edge in t1.get_edges():
+    #     edge.remove_triangle(t1)
+    # for edge in t2.get_edges():
+    #     edge.remove_triangle(t2)
+    t1.destroy()
+    t2.destroy()
 
     t1.new_points((p1, p3, p4))
     t2.new_points((p2, p3, p4))
