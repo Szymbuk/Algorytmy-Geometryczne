@@ -1,9 +1,10 @@
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 from bitalg.Projekt.utils.orient import orient
+from bitalg.visualizer.main import Visualizer
 
 
-def jump_and_walk_triangle_search(point: Point,triangles: list[Triangle]) -> Triangle:
+def jump_and_walk_triangle_search(point: Point,triangles: list[Triangle], vis: Visualizer = None) -> Triangle:
     actual_triangle = triangles[0]
     """
 

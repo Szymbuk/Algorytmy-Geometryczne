@@ -3,6 +3,8 @@ from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 from bitalg.Projekt.utils.search_triangulation import find_sec_in_T
+from bitalg.visualizer.main import Visualizer
+
 
 def turned_points(sec: Section) -> set[Point]:
     """
@@ -18,7 +20,7 @@ def turned_points(sec: Section) -> set[Point]:
     
     return new_sec_pts
 
-def turn(sec: Section) -> tuple[Point, Point]:
+def turn(sec: Section,vis: Visualizer) -> tuple[Point, Point]:
     """
     Dokonuje "przekręcenia" krawędzi w triangulacji
     """
@@ -37,11 +39,17 @@ def turn(sec: Section) -> tuple[Point, Point]:
     #     edge.remove_triangle(t1)
     # for edge in t2.get_edges():
     #     edge.remove_triangle(t2)
-    t1.destroy()
-    t2.destroy()
+    t1.destroy(vis)
+    t2.destroy(vis)
 
     t1.new_points((p1, p3, p4))
     t2.new_points((p2, p3, p4))
+    if vis is not None:
+        vis_t1 = vis.add_polygon(t1.get_list_tuple_points(),fill=False,color="green")
+        vis_t2 = vis.add_polygon(t2.get_list_tuple_points(),fill=False,color="green")
+        t1.set_vis_polygon(vis_t1)
+        t2.set_vis_polygon(vis_t2)
+
 
     return p3, p4
 
@@ -59,7 +67,7 @@ def is_legal(sec: Section) -> bool:
     
     return not point.in_circle(center, radius)
 
-def legalize_edge(point: Point, sec: Section, T: list[Triangle]) -> None:
+def legalize_edge(point: Point, sec: Section, T: list[Triangle],vis: Visualizer) -> None:
     # trzeba dodać obsługę krawędzi "dopisanych" na początku algorytmu
     # Czy potrzebujemy listy trójkątów?
     # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
@@ -78,11 +86,11 @@ def legalize_edge(point: Point, sec: Section, T: list[Triangle]) -> None:
     k = p2 if p1 == point else p1
 
     if not is_legal(sec):
-        turn(sec)
+        turn(sec,vis)
 
         sec1 = find_sec_in_T((i, k))
         sec2 = find_sec_in_T((j, k))
 
-        legalize_edge(point, sec1, T)
-        legalize_edge(point, sec2, T)
+        legalize_edge(point, sec1, T,vis)
+        legalize_edge(point, sec2, T,vis)
 

@@ -6,13 +6,15 @@ import numpy as np
 
 
 from bitalg.Projekt.utils.orient import orient
+from bitalg.visualizer.main import Visualizer
 
 
 class Triangle:
 
-    def __init__(self, p1: Point | Section, p2: Point | Section, p3: Point | Section):
+    def __init__(self, p1: Point | Section, p2: Point | Section, p3: Point | Section, vis_polygon = None):
         self.__points: list['Point'] = []
         self.__edges: set['Section'] = set()
+        self.__vis_polygon = vis_polygon
 
         if isinstance(p1,Point) and isinstance(p2,Point) and isinstance(p3,Point):
             self.__points.append(p1)
@@ -118,12 +120,23 @@ class Triangle:
 
         return Point(x0,y0),r
 
-    def destroy(self):
+    def destroy(self,vis: Visualizer = None):
         """
-        Usuwa referencje z powiązanych krawędzi do danego trójkąta
+        Usuwa referencje z powiązanych krawędzi do danego trójkąta,
+        jeżeli podano obiekt sceny, obiekt jest z niej usuwany
         """
+        if vis is not None:
+            if self.__vis_polygon is None:
+                raise ValueError("Próba usunięcia ze sceny obiektu, który nie posiada referencji do obiektu sceny")
+            vis.remove_figure(self.__vis_polygon)
         for edge in self.__edges:
             edge.remove_triangle(self)
+
+    def set_vis_polygon(self,vis_polygon):
+        """
+        Przypisuje referencję do obiektu sceny
+        """
+        self.__vis_polygon = vis_polygon
 
     def new_points(self, points: tuple[Point, Point, Point]):
         self.__points = list(points)
