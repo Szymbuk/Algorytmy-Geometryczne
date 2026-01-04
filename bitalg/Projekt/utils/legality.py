@@ -67,9 +67,8 @@ def is_legal(sec: Section) -> bool:
     
     return not point.in_circle(center, radius)
 
-def legalize_edge(point: Point, sec: Section, T: list[Triangle],vis: Visualizer) -> None:
+def legalize_edge(point: Point, sec: Section, vis: Visualizer) -> None:
     # trzeba dodać obsługę krawędzi "dopisanych" na początku algorytmu
-    # Czy potrzebujemy listy trójkątów?
     # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
     if len(sec.get_triangles())<2:
         return
@@ -86,11 +85,11 @@ def legalize_edge(point: Point, sec: Section, T: list[Triangle],vis: Visualizer)
     k = p2 if p1 == point else p1
 
     if not is_legal(sec):
-        turn(sec,vis)
+        turn(sec, vis)
 
         sec1 = find_sec_in_T((i, k))
         sec2 = find_sec_in_T((j, k))
 
-        legalize_edge(point, sec1, T,vis)
-        legalize_edge(point, sec2, T,vis)
+        legalize_edge(point, sec1, vis)
+        legalize_edge(point, sec2, vis)
 

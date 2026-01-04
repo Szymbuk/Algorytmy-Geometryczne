@@ -139,6 +139,9 @@ class Triangle:
         self.__vis_polygon = vis_polygon
 
     def new_points(self, points: tuple[Point, Point, Point]):
+        """
+        Przypisuje nowe punkty oraz krawędzie danemu trójkątowi
+        """
         self.__points = list(points)
         self.__edges = set()
         p1, p2, p3 = points
@@ -168,9 +171,12 @@ class Triangle:
 
     def  __repr__(self) -> str:
         temp = self.get_list_edges()
-        res = "Triangle:\n"
-        for i in temp:
-            res += "{}\n".format(i)
+        res = "Triangle: "
+        for edge in temp:
+            res += f"["
+            for point in edge:
+                res += f"({round(point[0], 2)}, {round(point[1], 2)})"
+            res += "]  "
         res += "\n"
         return res
 

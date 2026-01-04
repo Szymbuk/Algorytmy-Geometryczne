@@ -24,7 +24,7 @@ class Section:
     def add_triangle(self, triangle: 'Triangle'):
         self.__triangles.add(triangle)
         if len(self.__triangles) >2:
-            raise ValueError("Only 2 triangles can be assigned to a single Section object")
+            raise ValueError("Jednemu odcinkowi można przyporządkować co najwyżej 2 trójkąty")
 
     def remove_triangle(self, triangle: 'Triangle'):
         """
