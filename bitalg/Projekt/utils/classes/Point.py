@@ -59,6 +59,6 @@ class Point:
         return hash(self.__x) + hash(self.__y) + hash(self.__id)
 
     def  __repr__(self) -> str:
-        return "Point: ({},{})".format(self.__x,self.__y)
+        return "Point({},{})".format(self.__x,self.__y)
 
 

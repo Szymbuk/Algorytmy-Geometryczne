@@ -68,6 +68,11 @@ def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
 
             new_sections_points = [(i, k), (i, l), (j, k), (j, l)]
             new_triangles = [Triangle(point, *points) for points in new_sections_points]
+            if vis is not None:
+                for triangle in new_triangles:
+                    vis_t = vis.add_polygon(triangle.get_list_tuple_points(),color="green",fill=False)
+                    triangle.set_vis_polygon(vis_t)
+
             
             for triangle in new_triangles:
                 Triangles.append(triangle)
