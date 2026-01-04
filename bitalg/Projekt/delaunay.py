@@ -5,12 +5,13 @@ from bitalg.Projekt.utils.classes.Triangle import Triangle
 from bitalg.Projekt.utils.legality import legalize_edge, turned_points
 
 from bitalg.Projekt.utils.orient import orient
-from bitalg.Projekt.utils.search_triangulation import find_triangle_containing_point, find_sec_in_T
+from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
+from bitalg.Projekt.utils.search_triangulation import find_triangle_containing_point
 from bitalg.visualizer.main import Visualizer
 
-from typing import Union
+from typing import Union, Literal
 
-def get_initial_triangle(points: list[Point]) -> Triangle:
+def get_initial_triangle(points: list[Point], build_graph: bool) -> Triangle:
     """
     Dla danego zbioru punktów zwraca trójkąt, w którym zawarte są wszystkie punkty zbioru.
     """
@@ -21,7 +22,7 @@ def get_initial_triangle(points: list[Point]) -> Triangle:
     p2 = Point(0, 3*M) 
     p3 = Point((-3)*M, (-3)*M)
 
-    return Triangle(p1, p2, p3)
+    return Triangle(p1, p2, p3, build_graph)
 
 def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> Union[bool, Section]:
     """
@@ -34,15 +35,19 @@ def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> Unio
 
     for edge in edges:
         det = orient(p, *edge)
-        if abs(det) < eps: return find_sec_in_T(edge)
+        if abs(det) < eps: return find_sec_from_points(edge)
     return False
 
-def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
+def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis: Visualizer = None) -> list[Triangle]:
     """
     Dla danego zbioru punktów zwraca triangulację Delaunaya tego zbioru
+    Parametr variant odpowiada za wariant algorytmu wyszukiwania trójkąta który zawiera zadany punkt
     """
-    initial_triangle = get_initial_triangle(points)
-    Triangles = [initial_triangle]
+
+    build_graph = True if variant == "Graph" else False
+
+    initial_triangle = get_initial_triangle(points, build_graph)
+    Triangulation = [initial_triangle]
 
     if vis is not None:
         vis_initial_points = vis.add_point(initial_triangle.get_list_tuple_points(), color='orange')
@@ -53,8 +58,8 @@ def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
         if vis is not None:
             vis.add_point(point.get_cords(),color="red")
 
-        triangle = find_triangle_containing_point(point, Triangles, variant="JaW")
-        potential_edge = is_point_on_triangle_edge(point, triangle)
+        curr_triangle = find_triangle_containing_point(point, Triangulation, variant, initial_triangle, vis)
+        potential_edge = is_point_on_triangle_edge(point, curr_triangle)
 
         if potential_edge: # punkt na krawędzi trójkąta
             t1, t2 = tuple(potential_edge.get_triangles())
@@ -63,34 +68,45 @@ def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
     
             t1.destroy(vis)
             t2.destroy(vis)
-            Triangles.remove(t1)
-            Triangles.remove(t2)
+            Triangulation.remove(t1)
+            Triangulation.remove(t2)
 
             new_sections_points = [(i, k), (i, l), (j, k), (j, l)]
-            new_triangles = [Triangle(point, *points) for points in new_sections_points]
+            new_triangles = [Triangle(point, *points, build_graph) for points in new_sections_points]
+
+            if build_graph:
+                for triangle in new_triangles:
+                    if triangle.get_edges().intersection(t1.get_edges()) != set():
+                        t1.children.add(triangle)
+                    if triangle.get_edges().intersection(t2.get_edges()) != set():
+                        t2.children.add(triangle)
+
+            for triangle in new_triangles:
+                Triangulation.append(triangle)
+
             if vis is not None:
                 for triangle in new_triangles:
-                    vis_t = vis.add_polygon(triangle.get_list_tuple_points(),color="green",fill=False)
+                    vis_t = vis.add_polygon(triangle.get_list_tuple_points(), color="green", fill=False)
                     triangle.set_vis_polygon(vis_t)
 
-            
-            for triangle in new_triangles:
-                Triangles.append(triangle)
-
             for points in new_sections_points:
-                sec = find_sec_in_T(points)
-                legalize_edge(point, sec, vis)
+                sec = find_sec_from_points(points)
+                legalize_edge(point, sec, Triangulation, build_graph, vis)
    
         else: # punkt wewnątrz trójkąta
-            p1,p2,p3 = triangle.get_points()
-            triangle.destroy(vis)
-            Triangles.remove(triangle)
+            p1,p2,p3 = curr_triangle.get_points()
+            curr_triangle.destroy(vis)
+            Triangulation.remove(curr_triangle)
 
             new_triangles_points = [(p1, p2), (p2, p3), (p3, p1)]
-            new_triangles = [Triangle(point, *points) for points in new_triangles_points]
+            new_triangles = [Triangle(point, *points, build_graph) for points in new_triangles_points]
 
             for triangle in new_triangles:
-                Triangles.append(triangle)
+                Triangulation.append(triangle)
+
+            if build_graph:
+                for triangle in new_triangles:
+                    curr_triangle.children.add(triangle)
 
             if vis is not None:
                 for t in new_triangles:
@@ -102,7 +118,7 @@ def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
                 edges |= t.get_edges()
 
             for edge in edges:
-                legalize_edge(point, edge, vis)
+                legalize_edge(point, edge, Triangulation, build_graph, vis)
 
     def contain_initial_points(triangle: Triangle):
         nonlocal initial_triangle
@@ -111,16 +127,11 @@ def triangulate(points: list[Point], vis: Visualizer = None) -> list[Triangle]:
                 return True
         return False
 
-
-    # print("func")
-    # print("initial: ")
-    # print(initial_triangle)
-    # print("\n\n\nTriangles: ")
-    # print(Triangles)
-    filtered_triangles = list(filter(contain_initial_points,Triangles))
+    filtered_triangles = list(filter(contain_initial_points,Triangulation))
     if vis is not None:
         for t in filtered_triangles:
             t.destroy(vis)
         vis.remove_figure(vis_initial_points)
 
-    return list(set(Triangles).difference(filtered_triangles))
+
+    return list(set(Triangulation).difference(filtered_triangles))

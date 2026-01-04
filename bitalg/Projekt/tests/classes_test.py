@@ -1,10 +1,11 @@
 import sys, os
-
-from bitalg.Projekt.utils.Point import Point
-from bitalg.Projekt.utils.Section import Section
-from bitalg.Projekt.utils.Triangle import Triangle
-
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
+
+from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Section import Section
+from bitalg.Projekt.utils.classes.Triangle import Triangle
+
+
 from bitalg.visualizer.main import Visualizer
 
 
@@ -31,6 +32,7 @@ def main():
     vis.add_point(q.get_cords(), color="orange")
     vis.add_point([p1.get_cords(), p2.get_cords(), p3.get_cords()], color="orange")
     vis.add_line_segment(T1.get_list_edges(), color="red")
+    vis.axis_equal()
     vis.show()
     vis.show_gif()
 

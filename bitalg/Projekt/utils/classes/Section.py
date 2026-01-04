@@ -52,7 +52,7 @@ class Section:
         return point.on_section(self)
 
     def  __repr__(self) -> str:
-        return "Section: ({})".format(self.get_tuple_ends())
+        return "Section: ({})".format(self.get_ends())
 
     def __eq__(self, other: 'Section'):
         if self.get_id() == other.get_id(): return True

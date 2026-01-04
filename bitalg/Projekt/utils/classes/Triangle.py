@@ -1,78 +1,75 @@
 from __future__ import annotations
-import math
+
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
-import numpy as np
 
-
+from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
 from bitalg.Projekt.utils.orient import orient
 from bitalg.visualizer.main import Visualizer
+
+import math
+import numpy as np
 
 
 class Triangle:
 
-    def __init__(self, p1: Point | Section, p2: Point | Section, p3: Point | Section, vis_polygon = None):
+    def __init__(self, obj1: Point | Section, obj2: Point | Section, obj3: Point | Section, build_graph: bool=False, vis_polygon = None):
         self.__points: list['Point'] = []
         self.__edges: set['Section'] = set()
         self.__vis_polygon = vis_polygon
 
-        if isinstance(p1,Point) and isinstance(p2,Point) and isinstance(p3,Point):
-            self.__points.append(p1)
-            self.__points.append(p2)
-            self.__points.append(p3)
+        if build_graph:
+            self.parents: set['Triangle'] = set()
+            self.children: set['Triangle'] = set()
 
-            # dodajemy krawędzie, jeżeli istniały to nie powinny się dublować
-            s1,s2,s3 = Section(p1,p2),Section(p2,p3),Section(p3,p1)
-            p1.add_edge(s1)
-            p1.add_edge(s3)
-            p2.add_edge(s1)
-            p2.add_edge(s2)
-            p3.add_edge(s2)
-            p3.add_edge(s3)
+        objects = [obj1, obj2, obj3]
 
+        if all(isinstance(obj, Point) for obj in objects):
+            self.new_points(tuple(objects))
 
-            for edge in p1.get_edges():
-                if p2 in edge.get_ends() or p3 in edge.get_ends():
-                    edge.add_triangle(self)
-                    self.__edges.add(edge)
+        elif all(isinstance(obj, Section) for obj in objects):
+            for edge in objects:
+                self.__edges.add(edge)
 
+            points = obj1.get_ends() | obj2.get_ends()
+            for point in points:
+                self.__points.append(point)
 
-            for edge in p2.get_edges():
-                if p3 in edge.get_ends():
-                    edge.add_triangle(self)
-                    self.__edges.add(edge)
-
-
-
-
-        elif isinstance(p1,Section) and isinstance(p2,Section) and isinstance(p3,Section):
-            self.__edges.add(p1)
-            self.__edges.add(p2)
-            self.__edges.add(p3)
-
-            # skoro istnieją odcinki to nie trzeba dodawać odcinków do punktów, bo te już tam są
-
-
-            point1,point2 = p1.get_tuple_ends()
-            point3, point4 = p2.get_tuple_ends()
-            self.__points.append(point1)
-            self.__points.append(point2)
-            if point3 not in self.__points:
-                self.__points.append(point3)
-            else:
-                self.__points.append(point4)
-
-            p1.add_triangle(self)
-            p2.add_triangle(self)
-            p3.add_triangle(self)
+            for obj in objects:
+                obj.add_triangle(self)
 
         else:
-            raise TypeError("Należy podać 3 punkty lub 3 odcinki.\n Podano {},{},{}".format(p1.__class__.__name__,p2.__class__.__name__,p3.__class__.__name__))
-
-
+            raise TypeError("Należy podać 3 punkty lub 3 odcinki.\n Podano {},{},{}".format(obj1.__class__.__name__,
+                                                                                            obj2.__class__.__name__,
+                                                                                            obj3.__class__.__name__))
+        
         if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
             # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
             self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
+
+    def new_points(self, points: tuple[Point, Point, Point]):
+        """
+        Przypisuje nowe punkty oraz krawędzie danemu trójkątowi
+        """
+        self.__points = list(points)
+        self.__edges = set()
+
+        p1, p2, p3 = points
+
+        # dodajemy krawędzie, jeżeli istniały to nie powinny się dublować
+        new_sections_points = [(p1, p2), (p2, p3), (p3, p1)]
+        new_sections = []
+        for points in new_sections_points:
+            sec = find_sec_from_points(points)
+            new_sections.append(sec if sec else Section(*points))
+
+        for section in new_sections:
+            section.add_triangle(self)
+            self.__edges.add(section)
+
+        if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
+            # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
+            self.__points[1],self.__points[2] = self.__points[2],self.__points[1]  
 
     def get_points(self) -> list[Point]:
         return self.__points
@@ -111,7 +108,6 @@ class Triangle:
 
 
         D,E,F = x
-        #print(D,E,F)
 
         x0 = -D/2
         y0 = -E/2
@@ -120,7 +116,7 @@ class Triangle:
 
         return Point(x0,y0),r
 
-    def destroy(self,vis: Visualizer = None):
+    def destroy(self, vis: Visualizer = None):
         """
         Usuwa referencje z powiązanych krawędzi do danego trójkąta,
         jeżeli podano obiekt sceny, obiekt jest z niej usuwany
@@ -136,38 +132,7 @@ class Triangle:
         """
         Przypisuje referencję do obiektu sceny
         """
-        self.__vis_polygon = vis_polygon
-
-    def new_points(self, points: tuple[Point, Point, Point]):
-        """
-        Przypisuje nowe punkty oraz krawędzie danemu trójkątowi
-        """
-        self.__points = list(points)
-        self.__edges = set()
-        p1, p2, p3 = points
-        s1,s2,s3 = Section(p1,p2),Section(p2,p3),Section(p3,p1)
-        p1.add_edge(s1)
-        p1.add_edge(s3)
-        p2.add_edge(s1)
-        p2.add_edge(s2)
-        p3.add_edge(s2)
-        p3.add_edge(s3)
-
-        for edge in p1.get_edges():
-            if p2 in edge.get_ends() or p3 in edge.get_ends():
-                edge.add_triangle(self)
-                self.__edges.add(edge)
-
-
-        for edge in p2.get_edges():
-            if p3 in edge.get_ends():
-                edge.add_triangle(self)
-                self.__edges.add(edge)
-
-        if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
-            # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
-            self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
-        
+        self.__vis_polygon = vis_polygon   
 
     def  __repr__(self) -> str:
         temp = self.get_list_edges()

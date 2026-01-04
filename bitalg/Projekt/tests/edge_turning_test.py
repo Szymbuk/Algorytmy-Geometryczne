@@ -21,6 +21,7 @@ def test1():
     print(triangles)
     vis.remove_figure(polygs)
     vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
+    vis.axis_equal()
     vis.show()
 
 
@@ -35,10 +36,11 @@ def test2():
     vis.show()
     #print(triangles)
     #print(is_legal(s5))
-    legalize_edge(p1,s5,triangles)
+    legalize_edge(p1,s5,vis)
     #print(triangles)
     vis.remove_figure(polygs)
     vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
+    vis.axis_equal()
     vis.show()
 
 

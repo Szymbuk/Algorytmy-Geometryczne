@@ -2,9 +2,8 @@ from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-from bitalg.Projekt.utils.search_triangulation import find_sec_in_T
+from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
 from bitalg.visualizer.main import Visualizer
-
 
 def turned_points(sec: Section) -> set[Point]:
     """
@@ -20,7 +19,7 @@ def turned_points(sec: Section) -> set[Point]:
     
     return new_sec_pts
 
-def turn(sec: Section,vis: Visualizer) -> tuple[Point, Point]:
+def turn(sec: Section, build_graph: bool, T: list[Triangle], vis: Visualizer) -> tuple[Point, Point]:
     """
     Dokonuje "przekręcenia" krawędzi w triangulacji
     """
@@ -34,21 +33,28 @@ def turn(sec: Section,vis: Visualizer) -> tuple[Point, Point]:
     p1.remove_edge(sec)
     p2.remove_edge(sec)
 
-    # usuwam trójkąty z wszystkich ich krawędzi, odpowiednie krawędzie zostaną dodane przy wywołaniu new_points
-    # for edge in t1.get_edges():
-    #     edge.remove_triangle(t1)
-    # for edge in t2.get_edges():
-    #     edge.remove_triangle(t2)
     t1.destroy(vis)
     t2.destroy(vis)
 
-    t1.new_points((p1, p3, p4))
-    t2.new_points((p2, p3, p4))
+    new_triangles = (
+        Triangle(p1, p3, p4, build_graph),
+        Triangle(p2, p3, p4, build_graph)
+    )
+    T.extend(list(new_triangles))
+
+    T.remove(t1)
+    T.remove(t2)
+
+    if build_graph:
+        t1.children |= set(new_triangles)
+        t2.children |= set(new_triangles)
+
     if vis is not None:
-        vis_t1 = vis.add_polygon(t1.get_list_tuple_points(),fill=False,color="green")
-        vis_t2 = vis.add_polygon(t2.get_list_tuple_points(),fill=False,color="green")
-        t1.set_vis_polygon(vis_t1)
-        t2.set_vis_polygon(vis_t2)
+        new_t1, new_t2 = new_triangles
+        vis_t1 = vis.add_polygon(new_t1.get_list_tuple_points(),fill=False,color="green")
+        vis_t2 = vis.add_polygon(new_t2.get_list_tuple_points(),fill=False,color="green")
+        new_t1.set_vis_polygon(vis_t1)
+        new_t2.set_vis_polygon(vis_t2)
 
 
     return p3, p4
@@ -67,15 +73,10 @@ def is_legal(sec: Section) -> bool:
     
     return not point.in_circle(center, radius)
 
-def legalize_edge(point: Point, sec: Section, vis: Visualizer) -> None:
-    # trzeba dodać obsługę krawędzi "dopisanych" na początku algorytmu
-    # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
-    if len(sec.get_triangles())<2:
+def legalize_edge(point: Point, sec: Section, T: list[Triangle], build_graph: bool, vis: Visualizer) -> None:
+    if len(sec.get_triangles())<2: # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
         return
-    # print("legalise")
-    # print(point)
-    # print(sec)
-    # print(sec.get_triangles(),"\n\n")
+
     sec_pts = sec.get_ends()
     new_sec_pts = turned_points(sec)
 
@@ -85,11 +86,11 @@ def legalize_edge(point: Point, sec: Section, vis: Visualizer) -> None:
     k = p2 if p1 == point else p1
 
     if not is_legal(sec):
-        turn(sec, vis)
+        turn(sec, build_graph, T, vis)
 
-        sec1 = find_sec_in_T((i, k))
-        sec2 = find_sec_in_T((j, k))
+        sec1 = find_sec_from_points((i, k))
+        sec2 = find_sec_from_points((j, k))
 
-        legalize_edge(point, sec1, vis)
-        legalize_edge(point, sec2, vis)
+        legalize_edge(point, sec1, T, build_graph, vis)
+        legalize_edge(point, sec2, T, build_graph, vis)
 

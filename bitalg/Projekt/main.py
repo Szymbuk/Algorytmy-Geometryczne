@@ -51,13 +51,13 @@ def main():
 
 def test():
     points = generate_uniform_points(-100, 100, 20)
-    triangles = triangulate(points)
+    triangles = triangulate(points, variant="Graph")
     draw_triangulation(points, triangles, draw_circles=False)
 
 def test2():
     p1, p2, p3, p4, p5, p6 = Point(0, 0), Point(5, 0), Point(0, 5), Point(1, 4), Point(4, 1), Point(2, 2)
     points = [p1, p2, p3, p4, p5, p6]
-    triangles = triangulate(points)
+    triangles = triangulate(points, variant="Graph")
     draw_triangulation(points, triangles, draw_circles=False)
 
 if __name__ == "__main__":
