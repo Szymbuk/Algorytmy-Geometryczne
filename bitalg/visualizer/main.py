@@ -71,3 +71,9 @@ class Visualizer:
 
     def save_gif(self, filename='animation', interval=256):
         Plot.save_gif(self.plot_data, self.data, interval, filename)
+
+    def set_limits(self, xlim=None, ylim=None):
+        if xlim is not None:
+            self.plot_data['xlim'] = xlim
+        if ylim is not None:
+            self.plot_data['ylim'] = ylim

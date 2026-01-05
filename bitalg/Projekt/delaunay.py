@@ -41,7 +41,7 @@ def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> Unio
 def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis: Visualizer = None) -> list[Triangle]:
     """
     Dla danego zbioru punktów zwraca triangulację Delaunaya tego zbioru
-    Parametr variant odpowiada za wariant algorytmu wyszukiwania trójkąta który zawiera zadany punkt
+    Parametr variant odpowiada za wariant algorytmu wyszukiwania trójkąta, który zawiera zadany punkt
     """
 
     build_graph = True if variant == "Graph" else False

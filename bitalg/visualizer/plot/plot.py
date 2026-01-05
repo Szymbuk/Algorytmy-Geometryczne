@@ -25,6 +25,12 @@ class Plot:
         else:
             ax.autoscale()
 
+        if 'xlim' in plot_data:
+            ax.set_xlim(plot_data['xlim'])
+        if 'ylim' in plot_data:
+            ax.set_ylim(plot_data['ylim'])
+
+
         return fig, ax
 
     @staticmethod
@@ -55,6 +61,11 @@ class Plot:
             ax.axis('equal')
         else:
             ax.autoscale()
+
+        if 'xlim' in plot_data:
+            ax.set_xlim(plot_data['xlim'])
+        if 'ylim' in plot_data:
+            ax.set_ylim(plot_data['ylim'])
             
         return animation.ArtistAnimation(fig=fig, artists=artists, interval=interval, blit=True)
 

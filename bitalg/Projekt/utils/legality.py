@@ -85,12 +85,58 @@ def legalize_edge(point: Point, sec: Section, T: list[Triangle], build_graph: bo
 
     k = p2 if p1 == point else p1
 
+    if vis is not None:
+        circle_triangle = None
+        for triangle in sec.get_triangles():
+            if point in triangle.get_points():
+                circle_triangle = triangle
+        if circle_triangle is None:
+            raise ValueError("Nie ma takiego trójkąta")
+
+        circle_center, radius = circle_triangle.define_circle()
+        vis_circle = vis.add_circle([circle_center.get_x(),circle_center.get_y(),radius],fill=False,color="purple")
+        vis_segment =vis.add_line_segment(sec.get_tuple_ends(),color="red")
+
     if not is_legal(sec):
         turn(sec, build_graph, T, vis)
 
         sec1 = find_sec_from_points((i, k))
         sec2 = find_sec_from_points((j, k))
+        if vis is not None:
+            vis.show()
+            vis.remove_figure(vis_segment)
+            vis_new_segment = vis.add_line_segment((p1.get_cords(),p2.get_cords()),color='red')
+            vis.show()
+            vis.remove_figure(vis_circle)
+            new_sec = None
+            for edge in p1.get_edges():
+                if p2 in edge.get_ends():
+                    new_sec = edge
+            if new_sec is None:
+                raise ValueError("Nie ma takiego odcinka")
+
+            new_circle_triangle = None
+            for triangle in new_sec.get_triangles():
+                if point in triangle.get_points():
+                    new_circle_triangle = triangle
+            if new_circle_triangle is None:
+                raise ValueError("Nie ma takiego trójkąta")
+
+            circle_center, radius = new_circle_triangle.define_circle()
+            new_vis_circle = vis.add_circle([circle_center.get_x(), circle_center.get_y(), radius], fill=False, color="purple")
+            vis.show()
+
+
+
+            vis.remove_figure(vis_new_segment)
+            vis.remove_figure(new_vis_circle)
+
 
         legalize_edge(point, sec1, T, build_graph, vis)
         legalize_edge(point, sec2, T, build_graph, vis)
+
+    elif vis is not None:
+        vis.remove_figure(vis_circle)
+        vis.remove_figure(vis_segment)
+
 
