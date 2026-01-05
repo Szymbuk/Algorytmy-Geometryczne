@@ -17,18 +17,10 @@ def test():
         stop = time.time()
         print("JaW: ",stop-start)
         start = time.time()
-        triangulate(points,"Graph")
+        #triangulate(points,"Graph")
         stop = time.time()
         print("Graph: ",stop-start)
         print("\n")
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     test()

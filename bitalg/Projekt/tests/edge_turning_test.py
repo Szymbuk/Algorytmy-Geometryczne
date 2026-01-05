@@ -17,7 +17,7 @@ def test1():
     print(triangles)
     print(is_legal(s5))
     if not is_legal(s5):
-        turn(s5,None)
+        turn(s5,False,triangles,None)
     print(triangles)
     vis.remove_figure(polygs)
     vis.add_polygon([t.get_list_tuple_points() for t in triangles], color="green", fill=False)
@@ -47,5 +47,5 @@ def test2():
 
 
 if __name__ == "__main__":
-    #test1()
-    test2()
+    test1()
+    #test2()

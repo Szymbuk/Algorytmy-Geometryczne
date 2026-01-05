@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Point import Point, EPSILON
 from bitalg.Projekt.utils.classes.Section import Section
 
 from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
@@ -42,7 +42,9 @@ class Triangle:
             raise TypeError("Należy podać 3 punkty lub 3 odcinki.\n Podano {},{},{}".format(obj1.__class__.__name__,
                                                                                             obj2.__class__.__name__,
                                                                                             obj3.__class__.__name__))
-        
+        if abs(orient(self.__points[0],self.__points[1],self.__points[2]))<EPSILON:
+            raise ValueError("Próba utworzenia trójkąta z punktów współliniowych")
+
         if orient(self.__points[0],self.__points[1],self.__points[2]) < 0:
             # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
             self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
@@ -104,7 +106,12 @@ class Triangle:
                      -(p2.get_x() ** 2 + p2.get_y() ** 2),
                      -(p3.get_x() ** 2 + p3.get_y() ** 2),
                      ])
-        x = np.linalg.solve(A,b)
+        try:
+            x = np.linalg.solve(A,b)
+        except np.linalg.LinAlgError:
+            # Punkty współliniowe - okrąg ma nieskończony promień.
+            # Zwracamy "bezpieczną" wartość, punkt bardzo daleko
+            return Point(float('inf'), float('inf')), float('inf')
 
 
         D,E,F = x

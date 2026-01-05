@@ -1,5 +1,5 @@
 
-from bitalg.Projekt.utils.classes.Point import Point
+from bitalg.Projekt.utils.classes.Point import Point, EPSILON
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 from bitalg.Projekt.utils.legality import legalize_edge, turned_points
@@ -24,7 +24,7 @@ def get_initial_triangle(points: list[Point], build_graph: bool) -> Triangle:
 
     return Triangle(p1, p2, p3, build_graph)
 
-def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> Union[bool, Section]:
+def is_point_on_triangle_edge(p: Point, triangle: Triangle) -> Union[bool, Section]:
     """
     Przyjmuje punkt oraz trójkąt. Jeżeli punkt leży na którejś z krawędzi trójkąta, zwraca tę krawędź,
     w przeciwnym razie zwraca False.
@@ -35,7 +35,7 @@ def is_point_on_triangle_edge(p: Point, triangle: Triangle, eps = 1e-12) -> Unio
 
     for edge in edges:
         det = orient(p, *edge)
-        if abs(det) < eps: return find_sec_from_points(edge)
+        if abs(det) < EPSILON: return find_sec_from_points(edge)
     return False
 
 def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis: Visualizer = None) -> list[Triangle]:
