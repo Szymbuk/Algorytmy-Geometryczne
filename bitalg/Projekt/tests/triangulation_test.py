@@ -23,7 +23,7 @@ def test():
 ]"""
     points = generate_uniform_points(-10,10,4)
     print(points)
-    triangles =triangulate(points,"Graph",vis)
+    triangles =triangulate(points,"JaW",vis)
     print(triangles)
     #vis.add_polygon(list(map(lambda x: x.get_list_tuple_points(),triangles)),fill=False,color="green")
 

@@ -8,7 +8,7 @@ from bitalg.Projekt.utils.directed_graph_dfs import dfs_trianglation
 from bitalg.visualizer.main import Visualizer
 
 
-def find_triangle_containing_point(point: Point, T: list[Triangle], variant: Literal["JaW", "Graph"], initial_triangle: Triangle, vis: Visualizer = None) -> Triangle:
+def find_triangle_containing_point(point: Point, T: set[Triangle], variant: Literal["JaW", "Graph"], initial_triangle: Triangle, vis: Visualizer = None) -> Triangle:
     """
     Zwraca trójkąt triangulacji który zawiera dany punkt, możliwe są dwa warianty 
     czyli dwa różne algorytmy znajdowania tego trójkąta:

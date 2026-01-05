@@ -47,7 +47,7 @@ def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis
     build_graph = True if variant == "Graph" else False
 
     initial_triangle = get_initial_triangle(points, build_graph)
-    Triangulation = [initial_triangle]
+    Triangulation = {initial_triangle}
 
     if vis is not None:
         vis_initial_points = vis.add_point(initial_triangle.get_list_tuple_points(), color='orange')
@@ -82,7 +82,7 @@ def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis
                         t2.children.add(triangle)
 
             for triangle in new_triangles:
-                Triangulation.append(triangle)
+                Triangulation.add(triangle)
 
             if vis is not None:
                 for triangle in new_triangles:
@@ -102,7 +102,7 @@ def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis
             new_triangles = [Triangle(point, *points, build_graph) for points in new_triangles_points]
 
             for triangle in new_triangles:
-                Triangulation.append(triangle)
+                Triangulation.add(triangle)
 
             if build_graph:
                 for triangle in new_triangles:

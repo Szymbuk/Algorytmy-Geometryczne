@@ -12,6 +12,7 @@ from typing import Union, Literal
 import time
 import matplotlib.pyplot as plt
 from bitalg.Projekt.utils.generate_points import generate_uniform_points
+from copy import deepcopy
 
 
 def get_initial_triangle(points: list[Point], build_graph: bool) -> Triangle:
@@ -60,7 +61,7 @@ def triangulate_benchmark(points: list[Point], variant: Literal["JaW", "Graph"] 
     build_graph = True if variant == "Graph" else False
 
     initial_triangle = get_initial_triangle(points, build_graph)
-    Triangulation = [initial_triangle]
+    Triangulation = {initial_triangle}
 
 
 
@@ -95,7 +96,7 @@ def triangulate_benchmark(points: list[Point], variant: Literal["JaW", "Graph"] 
                         t2.children.add(triangle)
 
             for triangle in new_triangles:
-                Triangulation.append(triangle)
+                Triangulation.add(triangle)
 
 
 
@@ -112,7 +113,7 @@ def triangulate_benchmark(points: list[Point], variant: Literal["JaW", "Graph"] 
             new_triangles = [Triangle(point, *points, build_graph) for points in new_triangles_points]
 
             for triangle in new_triangles:
-                Triangulation.append(triangle)
+                Triangulation.add(triangle)
 
             if build_graph:
                 for triangle in new_triangles:
@@ -167,18 +168,20 @@ def run_performance_analysis():
 
     print(f"{'N':<10} | {'Search [s]':<12} | {'Update [s]':<12} | {'Total [s]':<12}")
     print("-" * 55)
-    for i in range(len(variants)):
-        print(variants[i])
-        for n in sizes:
+    for n in sizes:
+        points = generate_uniform_points(-1000, 1000, n)
+        for i in range(len(variants)):
+            print(variants[i])
+
             # Generowanie danych
-            points = generate_uniform_points(-1000, 1000, n)
+
 
             # Uruchomienie algorytmu (bez wizualizacji!)
             # stats = triangulate_with_stats(points, variant="JaW")
 
 
-            import random
-            stats = triangulate_benchmark(points,variants[i])[1]
+
+            stats = triangulate_benchmark(deepcopy(points),variants[i])[1]
 
 
             results[i]["n"].append(n)
@@ -187,7 +190,7 @@ def run_performance_analysis():
             results[i]["total"].append(stats["total_time"])
 
             print(f"{n:<10} | {stats['search_time']:<12.4f} | {stats['update_time']:<12.4f} | {stats['total_time']:<12.4f}")
-
+        print()
     return results
 
 

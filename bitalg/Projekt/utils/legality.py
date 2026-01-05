@@ -19,7 +19,7 @@ def turned_points(sec: Section) -> set[Point]:
     
     return new_sec_pts
 
-def turn(sec: Section, build_graph: bool, T: list[Triangle], vis: Visualizer) -> tuple[Point, Point]:
+def turn(sec: Section, build_graph: bool, T: set[Triangle], vis: Visualizer) -> tuple[Point, Point]:
     """
     Dokonuje "przekręcenia" krawędzi w triangulacji
     """
@@ -40,7 +40,7 @@ def turn(sec: Section, build_graph: bool, T: list[Triangle], vis: Visualizer) ->
         Triangle(p1, p3, p4, build_graph),
         Triangle(p2, p3, p4, build_graph)
     )
-    T.extend(list(new_triangles))
+    T |= set(new_triangles)
 
     T.remove(t1)
     T.remove(t2)
@@ -73,7 +73,7 @@ def is_legal(sec: Section) -> bool:
     
     return not point.in_circle(center, radius)
 
-def legalize_edge(point: Point, sec: Section, T: list[Triangle], build_graph: bool, vis: Visualizer) -> None:
+def legalize_edge(point: Point, sec: Section, T: set[Triangle], build_graph: bool, vis: Visualizer) -> None:
     if len(sec.get_triangles())<2: # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
         return
 
