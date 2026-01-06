@@ -45,6 +45,11 @@ def turn(sec: Section, build_graph: bool, T: set[Triangle], vis: Visualizer) -> 
     T.remove(t1)
     T.remove(t2)
 
+    for edge in t1.get_edges():
+        edge.remove_triangle(t1)
+    for edge in t2.get_edges():
+        edge.remove_triangle(t2)
+
     if build_graph:
         t1.children |= set(new_triangles)
         t2.children |= set(new_triangles)
@@ -74,7 +79,7 @@ def is_legal(sec: Section) -> bool:
     return not point.in_circle(center, radius)
 
 def legalize_edge(point: Point, sec: Section, T: set[Triangle], build_graph: bool, vis: Visualizer) -> None:
-    if len(sec.get_triangles())<2: # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
+    if len(sec.get_triangles()) < 2: # nie chcemy obracać odcinków będących na zewnątrz (należących do otoczki)
         return
 
     sec_pts = sec.get_ends()

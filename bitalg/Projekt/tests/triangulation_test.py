@@ -30,7 +30,7 @@ def test():
     #vis.add_polygon(list(map(lambda x: x.get_list_tuple_points(),triangles)),fill=False,color="green")
 
 
-    #vis.axis_equal()
+    vis.axis_equal()
     vis.show()
     #vis.save_gif("random",interval=500)
 

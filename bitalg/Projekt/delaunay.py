@@ -71,6 +71,11 @@ def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis
             Triangulation.remove(t1)
             Triangulation.remove(t2)
 
+            for edge in t1.get_edges():
+                edge.remove_triangle(t1)
+            for edge in t2.get_edges():
+                edge.remove_triangle(t2)
+
             new_sections_points = [(i, k), (i, l), (j, k), (j, l)]
             new_triangles = [Triangle(point, *points, build_graph) for points in new_sections_points]
 
@@ -97,6 +102,10 @@ def triangulate(points: list[Point], variant: Literal["JaW", "Graph"]="JaW", vis
             p1,p2,p3 = curr_triangle.get_points()
             curr_triangle.destroy(vis)
             Triangulation.remove(curr_triangle)
+
+            for edge in curr_triangle.get_edges():
+                edge.remove_triangle(curr_triangle)
+
 
             new_triangles_points = [(p1, p2), (p2, p3), (p3, p1)]
             new_triangles = [Triangle(point, *points, build_graph) for points in new_triangles_points]

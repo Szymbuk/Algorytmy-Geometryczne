@@ -4,7 +4,6 @@ import time
 
 def test():
 
-
     numbers = [100,1e3,1e4,1e5,1e6,5*1e6]
 
     for i in range(len(numbers)):
@@ -13,11 +12,11 @@ def test():
         print("Number of points: ",n)
         points = generate_uniform_points(-1000000, 1000000, n)
         start = time.time()
-        triangulate(points,"JaW")
+        triangulate(points,"Graph")
         stop = time.time()
         print("JaW: ",stop-start)
         start = time.time()
-        #triangulate(points,"Graph")
+        triangulate(points,"JaW")
         stop = time.time()
         print("Graph: ",stop-start)
         print("\n")
