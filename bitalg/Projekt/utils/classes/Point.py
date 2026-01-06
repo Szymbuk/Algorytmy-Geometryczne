@@ -2,8 +2,6 @@ import math
 from typing import TYPE_CHECKING
 import itertools
 
-
-
 from bitalg.Projekt.utils.orient import orient
 
 if TYPE_CHECKING:
@@ -40,7 +38,7 @@ class Point:
     def add_edge(self, section:'Section') -> None:
         self.__edges.add(section)
 
-    def remove_edge(self, section:'Section')-> None:
+    def remove_edge(self, section:'Section') -> None:
         self.__edges.remove(section)
 
     def in_circle(self, point: 'Point', r: float) -> bool:

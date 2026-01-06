@@ -12,7 +12,7 @@ class Section:
 
     id_iter = itertools.count(start=0)
 
-    def __init__(self, p1: Point, p2: Point):
+    def __init__(self, p1: Point, p2: Point) -> None:
         self.__ends = set()
         self.__ends.add(p1)
         self.__ends.add(p2)
@@ -21,12 +21,12 @@ class Section:
         p1.add_edge(self)
         p2.add_edge(self)
 
-    def add_triangle(self, triangle: 'Triangle'):
+    def add_triangle(self, triangle: 'Triangle') -> None:
         self.__triangles.add(triangle)
         if len(self.__triangles) >2:
            raise ValueError("Jednemu odcinkowi można przyporządkować co najwyżej 2 trójkąty")
 
-    def remove_triangle(self, triangle: 'Triangle'):
+    def remove_triangle(self, triangle: 'Triangle') -> None:
         """
         usuwa trójkąt z listy trójkątów krawędzi, jeżeli ten trójkąt do niej należy
         """
@@ -36,7 +36,7 @@ class Section:
     def get_ends(self) -> set[Point]:
         return self.__ends
 
-    def get_tuple_ends(self):
+    def get_tuple_ends(self) -> list[tuple[float, float], tuple[float, float]]:
         res = []
         for x in list(self.__ends):
             res.append(x.get_cords())
@@ -47,9 +47,6 @@ class Section:
 
     def get_id(self) -> int:
         return self.__id
-
-    def on_section(self,point:Point):
-        return point.on_section(self)
 
     def  __repr__(self) -> str:
         return "Section: ({})".format(self.get_ends())

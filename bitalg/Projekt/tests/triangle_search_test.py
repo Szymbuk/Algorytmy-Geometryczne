@@ -1,6 +1,7 @@
 from bitalg.Projekt.delaunay import triangulate
 from bitalg.Projekt.utils.generate_points import generate_uniform_points
 import time
+from copy import deepcopy
 
 def test():
 
@@ -14,11 +15,11 @@ def test():
         start = time.time()
         triangulate(points,"Graph")
         stop = time.time()
-        print("JaW: ",stop-start)
+        print("Graph: ",stop-start)
         start = time.time()
         triangulate(points,"JaW")
         stop = time.time()
-        print("Graph: ",stop-start)
+        print("JaW: ",stop-start)
         print("\n")
 
 if __name__ == '__main__':

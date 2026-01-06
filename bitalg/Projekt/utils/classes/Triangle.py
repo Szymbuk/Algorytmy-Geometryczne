@@ -19,7 +19,6 @@ class Triangle:
         self.__vis_polygon = vis_polygon
 
         if build_graph:
-            self.parents: set['Triangle'] = set()
             self.children: set['Triangle'] = set()
 
         objects = [obj1, obj2, obj3]
@@ -49,7 +48,7 @@ class Triangle:
             # gwarantuje odpowiednią kolejność wierzchołków (odwrotnie do ruchu wskazówek zegara)
             self.__points[1],self.__points[2] = self.__points[2],self.__points[1]
 
-    def new_points(self, points: tuple[Point, Point, Point]):
+    def new_points(self, points: tuple[Point, Point, Point]) -> None:
         """
         Przypisuje nowe punkty oraz krawędzie danemu trójkątowi
         """
@@ -88,7 +87,7 @@ class Triangle:
     def get_edges(self) -> set[Section]:
         return self.__edges
 
-    def get_list_edges(self) -> list[Section]:
+    def get_list_edges(self) -> list[tuple[float, float]]:
         res = []
         for x in list(self.__edges):
             res.append(x.get_tuple_ends())
@@ -135,7 +134,7 @@ class Triangle:
         for edge in self.__edges:
             edge.remove_triangle(self)
 
-    def set_vis_polygon(self,vis_polygon):
+    def set_vis_polygon(self, vis_polygon):
         """
         Przypisuje referencję do obiektu sceny
         """
