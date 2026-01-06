@@ -38,7 +38,7 @@ def load_points_from_csv(filename: str) -> list[Point]:
                     p_id = int(row[0])
                     x = float(row[1])
                     y = float(row[2])
-                    points.append(Point(x, y, p_id))
+                    points.append(Point(x, y))
         print(f"Pomyślnie wczytano {len(points)} punktów z {filename}")
         return points
     except FileNotFoundError:

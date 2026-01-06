@@ -9,14 +9,10 @@ def jump_and_walk_triangle_search(point: Point, triangles: set[Triangle], vis: V
     if not hasattr(jump_and_walk_triangle_search, "last_triangle"):
         jump_and_walk_triangle_search.last_triangle = None
 
-        # Próbujemy użyć ostatniego trójkąta jako startowego
+    # Próbujemy użyć ostatniego trójkąta jako startowego
     actual_triangle = jump_and_walk_triangle_search.last_triangle
 
-    # Walidacja: Musimy sprawdzić, czy ten trójkąt nadal istnieje!
-    # (Mógł zostać usunięty w procesie flipowania w poprzednim kroku).
-    # Sprawdzenie 'in set' jest w Pythonie bardzo szybkie O(1).
     if actual_triangle is None or actual_triangle not in triangles:
-        # Fallback: Jeśli cache jest pusty lub nieaktualny, bierzemy dowolny ze zbioru
         for t in triangles:
             actual_triangle = t
             break

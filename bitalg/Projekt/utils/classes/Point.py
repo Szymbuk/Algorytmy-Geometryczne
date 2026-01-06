@@ -44,7 +44,7 @@ class Point:
         self.__edges.remove(section)
 
     def in_circle(self, point: 'Point', r: float) -> bool:
-        return math.sqrt((self.__x-point.get_x())**2 + (self.__y-point.get_y())**2 ) - r < EPSILON
+        return math.sqrt((self.__x-point.get_x())**2 + (self.__y-point.get_y())**2 ) - r < -EPSILON
 
     def on_section(self, section: 'Section') -> bool:
         start,end = list(section.get_ends())

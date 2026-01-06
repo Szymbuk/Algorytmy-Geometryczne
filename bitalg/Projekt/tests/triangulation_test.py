@@ -3,10 +3,9 @@ from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.generate_points import generate_uniform_points
 from bitalg.visualizer.main import Visualizer
 
-
 def test():
     vis = Visualizer()
-    vis.set_limits(xlim=(-30, 30), ylim=(-30, 30))
+    vis.set_limits(xlim=(-10, 10), ylim=(-10, 10))
     #points = [Point(0,0),Point(2,0),Point(1,2),Point(1,1)]
     """points = [Point(-561.9652499078964, -882.1804597099914), Point(-574.7043288894524, 543.6102623684917),
      Point(-192.6445520872337, 436.2953913056633), Point(-392.43052187171475, 714.8911722194955),
@@ -21,16 +20,19 @@ def test():
     Point(7, 5),  # p5 (Dodatkowy punkt z boku, żeby nie było zbyt symetrycznie)
     Point(1, 5)   # p6 (Dodatkowy punkt z drugiej strony)
 ]"""
-    points = generate_uniform_points(-10,10,4)
+    #points = generate_uniform_points(-10,10,5000)
+    points = [Point(0,0),Point(2,0),Point(0,2),Point(2,2),Point(-2,0),Point(0,-2),Point(-2,-2),Point(-2,2),Point(2,-2)]
     print(points)
     triangles =triangulate(points,"JaW",vis)
+
+
     print(triangles)
     #vis.add_polygon(list(map(lambda x: x.get_list_tuple_points(),triangles)),fill=False,color="green")
 
 
     #vis.axis_equal()
     vis.show()
-    vis.save_gif("random",interval=500)
+    #vis.save_gif("random",interval=500)
 
 
 if __name__ == "__main__":
