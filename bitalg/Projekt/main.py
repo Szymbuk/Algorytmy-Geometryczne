@@ -50,7 +50,7 @@ def main():
     vis.show_gif()
 
 def test():
-    points = generate_uniform_points(-100, 100, 20)
+    points = generate_uniform_points(-1000000, 1000000, 100)
     triangles = triangulate(points, variant="Graph")
     draw_triangulation(points, triangles, draw_circles=False)
 
@@ -62,5 +62,5 @@ def test2():
 
 if __name__ == "__main__":
     #main()
-    #test()
-    test2()
+    test()
+    #test2()
