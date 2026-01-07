@@ -1,5 +1,5 @@
 from bitalg.Projekt.delaunay import triangulate
-from bitalg.Projekt.utils.generate_points import generate_uniform_points
+from bitalg.Projekt.utils.generators.generate_points import generate_uniform_points
 import time
 from copy import deepcopy
 

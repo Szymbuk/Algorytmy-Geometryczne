@@ -1,7 +1,7 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 
-from bitalg.Projekt.utils.jump_and_walk import jump_and_walk_next
+from bitalg.Projekt.utils.triangle_search.jump_and_walk import jump_and_walk_next
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle

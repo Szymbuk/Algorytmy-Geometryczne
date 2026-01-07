@@ -2,7 +2,7 @@ from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
+from bitalg.Projekt.utils.triangle_operations.find_sec_from_points import find_sec_from_points
 from bitalg.visualizer.main import Visualizer
 
 def turned_points(sec: Section) -> set[Point]:

@@ -1,7 +1,7 @@
 from bitalg.Projekt.utils.classes.Point import Point
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 from bitalg.visualizer.main import Visualizer
-from bitalg.Projekt.utils.orient import orient
+from bitalg.Projekt.utils.triangle_operations.orient import orient
 
 def is_point_in_triangle(point: Point, triangle: Triangle) -> bool:
     p1, p2, p3 = triangle.get_points()

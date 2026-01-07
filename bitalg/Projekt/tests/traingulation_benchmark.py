@@ -1,17 +1,17 @@
 from bitalg.Projekt.utils.classes.Point import Point, EPSILON
 from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
-from bitalg.Projekt.utils.legality import legalize_edge, turned_points
+from bitalg.Projekt.utils.triangle_operations.legality import legalize_edge, turned_points
 
-from bitalg.Projekt.utils.orient import orient
-from bitalg.Projekt.utils.find_sec_from_points import find_sec_from_points
-from bitalg.Projekt.utils.search_triangulation import find_triangle_containing_point
+from bitalg.Projekt.utils.triangle_operations.orient import orient
+from bitalg.Projekt.utils.triangle_operations.find_sec_from_points import find_sec_from_points
+from bitalg.Projekt.utils.triangle_search.search_triangulation import find_triangle_containing_point
 from bitalg.visualizer.main import Visualizer
 
 from typing import Union, Literal
 import time
 import matplotlib.pyplot as plt
-from bitalg.Projekt.utils.generate_points import generate_uniform_points
+from bitalg.Projekt.utils.generators.generate_points import generate_uniform_points
 from copy import deepcopy
 
 

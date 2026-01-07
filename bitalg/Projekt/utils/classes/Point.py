@@ -2,13 +2,13 @@ import math
 from typing import TYPE_CHECKING
 import itertools
 
-from bitalg.Projekt.utils.orient import orient
+from bitalg.Projekt.utils.triangle_operations.orient import orient
 
 if TYPE_CHECKING:
     from bitalg.Projekt.utils.classes.Section import Section
     from bitalg.Projekt.utils.classes.Triangle import Triangle
 
-EPSILON = 10e-12
+EPSILON = 1e-12
 
 class Point:
 

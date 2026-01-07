@@ -1,6 +1,6 @@
 import random
 import math
-def generate_circle_points(O, R, n = 100):
+def generate_circle_points(O, R, n = 100) -> list[tuple[float,float]]:
     """
     Funkcja generuje jednostajnie n punktów na okręgu o środku O i promieniu R
     :param O: krotka współrzędnych x, y określająca środek okręgu
@@ -15,4 +15,3 @@ def generate_circle_points(O, R, n = 100):
         y = O[1] + R*math.sin(theta)
         tab.append((x,y))
     return tab
-       # raise Exception("Unimplemented")

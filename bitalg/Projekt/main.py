@@ -6,7 +6,7 @@ from bitalg.Projekt.utils.classes.Section import Section
 from bitalg.Projekt.utils.classes.Triangle import Triangle
 
 from bitalg.visualizer.main import Visualizer
-from utils.generate_points import generate_uniform_points
+from bitalg.Projekt.utils.generators.generate_points import generate_uniform_points
 from delaunay import triangulate 
 
 def draw_triangulation(points: list[Point], triangles: list[Triangle], draw_circles=False) -> None:

@@ -1,6 +1,6 @@
 from bitalg.Projekt.delaunay import triangulate
 from bitalg.Projekt.utils.classes.Point import Point
-from bitalg.Projekt.utils.generate_points import generate_uniform_points
+from bitalg.Projekt.utils.generators.generate_points import generate_uniform_points
 from bitalg.visualizer.main import Visualizer
 
 def test():
