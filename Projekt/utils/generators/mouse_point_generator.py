@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-# Upewnij się, że ścieżka importu jest poprawna dla Twojej struktury projektu
 from Projekt.utils.classes.Point import Point
+import numpy as np
 
-def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000):
+def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> np.array:
     # W Jupyter Notebook odkomentuj poniższą linię (w czystym Pythonie jest zbędna dzięki plt.ion())
     # %matplotlib tk
 
@@ -24,14 +24,13 @@ def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000):
         if event.dblclick and active:
             # Mouse1 (Lewy Przycisk) - Dodaj punkt
             if event.button == 1:
-                # Tworzymy obiekt Point zgodnie z Twoją klasą (teraz z ID)
-                new_point = Point(event.xdata, event.ydata)
+                new_point = np.array([event.xdata, event.ydata])
                 points.append(new_point)
 
 
                 # Rysujemy
                 draw_point([event.xdata, event.ydata])
-                print(f"Dodano punkt ID {new_point.get_id()}: ({new_point.get_x():.2f}, {new_point.get_y():.2f})")
+                print(f"Dodano punkt: ({new_point[0]:.2f}, {new_point[1]:.2f})")
 
             # Mouse3 (Prawy Przycisk) - Wyjdź
             elif event.button == 3:
@@ -54,6 +53,6 @@ def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000):
     # Wyświetlenie
     plt.tight_layout()
     plt.ion()  # Włączenie trybu interaktywnego (kluczowe dla działania draw_point)
-    plt.show() # Usunięto block=True, aby zachować spójność z działającym przykładem
+    plt.show()
 
-    return points
+    return np.array(points)
