@@ -1,16 +1,11 @@
+from Projekt.utils.custom_types import Point
 
-def orient(*args) -> float:
+
+def orient(points: tuple[Point,Point,Point]) -> float:
     # używamy własnej implementacji wyznacznika 2x2
-    if len(args) != 3:
-        raise ValueError("Oczekiwano 3 punktów")
-
-    p1, p2, p3 = args
-    try:
-        ax, ay = p1.get_cords()
-        bx, by = p2.get_cords()
-        cx, cy = p3.get_cords()
-    except:
-        raise AttributeError("Dostarczone obiekty nie są punktami")
-    
+    p1, p2, p3 = points
+    ax, ay = p1
+    bx, by = p2
+    cx, cy = p3
     det = (ax - cx) * (by - cy) - (ay - cy) * (bx - cx)
     return det

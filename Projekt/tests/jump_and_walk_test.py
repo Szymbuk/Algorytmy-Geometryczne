@@ -2,54 +2,72 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.getcwd(), '../..')))
 
 from Projekt.utils.triangle_search.jump_and_walk import jump_and_walk_next
-from Projekt.utils.classes.Point import Point
+from Projekt.utils.custom_types import Point,PointsArray
 from Projekt.utils.classes.Triangle import Triangle
+import numpy as np
 
 
 from bitalg.visualizer.main import Visualizer
 
 
 def main():
-    p1= Point(6, 0)
-    p2= Point(3, 1)
-    p3 = Point(8, 1)
-    p4= Point(0, 4)
-    p5= Point(2, 6)
-    p6 = Point(1, 8)
-    p7= Point(6, 10)
-    p8= Point(8, 12)
-    p9 = Point(7, 18)
-    p10 = Point(4,4)
-    px = Point(7,12)
+    p0 = np.array([0, 0])
+    p1 = np.array([6, 0])
+    p2 = np.array([3, 1])
+    p3 = np.array([8, 1])
+    p4 = np.array([0, 4])
+    p5 = np.array([2, 6])
+    p6 = np.array([1, 8])
+    p7 = np.array([6, 10])
+    p8 = np.array([8, 12])
+    p9 = np.array([7, 18])
+    p10 = np.array([4, 4])
+    px = np.array([7, 12])
 
-    t1 = Triangle(p1,p2,p10)
-    t2 = Triangle(p1,p3,p7)
-    t3 = Triangle(p1,p10,p7)
-    t4 = Triangle(p2,p10,p5)
-    t5 = Triangle(p2,p4,p5)
-    t6 = Triangle(p4,p5,p6)
-    t7 = Triangle(p5,p6,p7)
-    t8 = Triangle(p10,p5,p7)
-    t9 = Triangle(p3,p7,p8)
-    t10 = Triangle(p7,p8,p9)
-    t11 = Triangle(p7,p9,p6)
+    points: PointsArray = np.array([p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, px])
 
-    points: list['Point'] = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10]
+    t1 = Triangle((1, 10, 2))
+    t2 = Triangle((1, 3, 7))
+    t3 = Triangle((1, 7, 10))
+    t4 = Triangle((2, 10, 5))
+    t5 = Triangle((2, 5, 4))
+    t6 = Triangle((4, 5, 6))
+    t7 = Triangle((5, 7, 6))
+    t8 = Triangle((10, 7, 5))
+    t9 = Triangle((3, 8, 7))
+    t10 = Triangle((7, 8, 9))
+    t11 = Triangle((7, 9, 6))
+
+
     triangles: list['Triangle'] = [t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11]
+
+    adjacency_graph = {}
+    for triangle in triangles:
+        p1, p2, p3 = triangle.get_points()
+        edges = [(p1, p2), (p2, p3), (p3, p1)]
+        edges = list(map(lambda edge: tuple(sorted(edge)), edges))
+        for edge in edges:
+            if edge not in adjacency_graph:
+                adjacency_graph[edge] = []
+            adjacency_graph[edge].append(triangle)
 
 
     vis = Visualizer()
     for point in points:
-        vis.add_point(point.get_cords(),color = "red")
+        vis.add_point(point,color = "red")
     for triangle in triangles:
-        vis.add_line_segment(triangle.get_list_edges(),color = "green")
-    vis.add_point(px.get_cords(),color = "orange")
+        p1, p2, p3 = points[list(triangle.get_points())]
+        edges = [(p1, p2), (p2, p3), (p3, p1)]
+        vis.add_line_segment(edges,color = "green")
+    vis.add_point(px,color = "orange")
     vis.show()
 
     actual_triangle = triangles[4]
     while True:
-        drawn_triangle = vis.add_polygon(actual_triangle.get_list_tuple_points(), color="blue", fill=True)
-        next_triangle = jump_and_walk_next(px,actual_triangle)
+        drawn_triangle = vis.add_polygon(points[list(actual_triangle.get_points())], color="blue", fill=True)
+        vis.show()
+        next_triangle = jump_and_walk_next(11,actual_triangle,points,adjacency_graph)
+
         vis.remove_figure(drawn_triangle)
         if next_triangle == actual_triangle:
             break
