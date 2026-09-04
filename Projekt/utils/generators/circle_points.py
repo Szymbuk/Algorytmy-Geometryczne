@@ -1,6 +1,8 @@
 import numpy as np
+from Projekt.utils.custom_types import PointsArray
 
-def generate_circle_points(O, R, n = 100) -> np.ndarray:
+
+def generate_circle_points(O, R, n = 100) -> PointsArray:
     """
     Funkcja generuje jednostajnie n punktów na okręgu o środku O i promieniu R
     :param O: tablica współrzędnych x, y określająca środek okręgu

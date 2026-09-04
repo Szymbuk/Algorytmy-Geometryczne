@@ -1,11 +1,13 @@
 import csv
-from Projekt.utils.classes.Point import Point
+# from Projekt.utils.classes.Point import Point
 from Projekt.utils.classes.Triangle import Triangle
+import numpy as np
+from Projekt.utils.custom_types import Point,PointsArray
 
 
 # --- OBSŁUGA PUNKTÓW ---
 
-def save_points_to_csv(points: list[Point], filename: str):
+def save_points_to_csv(points: PointsArray, filename: str):
     """
     Zapisuje listę obiektów Point do pliku CSV.
     Format: id,x,y
@@ -15,15 +17,14 @@ def save_points_to_csv(points: list[Point], filename: str):
             writer = csv.writer(csv_file)
             writer.writerow(['id', 'x', 'y'])  # Nagłówek
 
-            for p in points:
-                # Używamy getterów z Twojej klasy Point
-                writer.writerow([p.get_id(), p.get_x(), p.get_y()])
+            for i,p in enumerate(points):
+                writer.writerow([i, p[0], p[1]])
         print(f"Pomyślnie zapisano {len(points)} punktów do {filename}")
     except IOError as e:
         print(f"Błąd zapisu punktów: {e}")
 
 
-def load_points_from_csv(filename: str) -> list[Point]:
+def load_points_from_csv(filename: str) -> PointsArray:
     """
     Wczytuje punkty z pliku CSV i zwraca listę obiektów Point.
     """
@@ -35,18 +36,17 @@ def load_points_from_csv(filename: str) -> list[Point]:
 
             for row in reader:
                 if row:
-                    p_id = int(row[0])
-                    x = float(row[1])
-                    y = float(row[2])
-                    points.append(Point(x, y))
+                    x = np.float64(row[1])
+                    y = np.float64(row[2])
+                    points.append(np.array([x, y]))
         print(f"Pomyślnie wczytano {len(points)} punktów z {filename}")
-        return points
+        return np.array(points)
     except FileNotFoundError:
         print(f"Plik {filename} nie istnieje.")
-        return []
+        return np.array([])
     except ValueError as e:
         print(f"Błąd formatu danych w pliku CSV: {e}")
-        return []
+        return np.array([])
 
 
 def save_triangulation_to_csv(triangles: list[Triangle], filename: str):
@@ -65,20 +65,19 @@ def save_triangulation_to_csv(triangles: list[Triangle], filename: str):
 
                 # Upewniamy się, że mamy 3 punkty (na wypadek błędów w logice)
                 if len(pts) == 3:
-                    writer.writerow([pts[0].get_id(), pts[1].get_id(), pts[2].get_id()])
+                    writer.writerow([pts[0], pts[1], pts[2]])
 
         print(f"Pomyślnie zapisano {len(triangles)} trójkątów do {filename}")
     except IOError as e:
         print(f"Błąd zapisu triangulacji: {e}")
 
 
-def load_triangulation_from_csv(filename: str, points: list[Point]) -> list[Triangle]:
+def load_triangulation_from_csv(filename: str, points: PointsArray) -> list[Triangle]:
     """
     Odtwarza triangulację z pliku CSV.
     UWAGA: Wymaga przekazania listy punktów (points), aby powiązać ID z obiektami.
     """
-    # Tworzymy słownik {id: Point} dla szybkiego wyszukiwania (O(1))
-    points_map = {p.get_id(): p for p in points}
+    # Tworzymy słownik {id: Point} dla szybkiego wyszukiwania (O(1)
     triangles = []
 
     try:
@@ -89,13 +88,9 @@ def load_triangulation_from_csv(filename: str, points: list[Point]) -> list[Tria
             for row in reader:
                 if row:
                     try:
-                        ids = [int(val) for val in row]
+                        ids = tuple([int(val) for val in row])
 
-                        p1 = points_map[ids[0]]
-                        p2 = points_map[ids[1]]
-                        p3 = points_map[ids[2]]
-
-                        triangles.append(Triangle(p1, p2, p3))
+                        triangles.append(Triangle((ids)))
                     except KeyError as e:
                         print(f"Błąd: Punkt o ID {e} nie istnieje w przekazanej liście punktów.")
 

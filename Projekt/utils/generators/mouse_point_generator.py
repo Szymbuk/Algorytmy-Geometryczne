@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
-from Projekt.utils.classes.Point import Point
+from Projekt.utils.custom_types import PointsArray
 import numpy as np
 
-def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> np.array:
+def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> PointsArray:
     # W Jupyter Notebook odkomentuj poniższą linię (w czystym Pythonie jest zbędna dzięki plt.ion())
     # %matplotlib tk
 
