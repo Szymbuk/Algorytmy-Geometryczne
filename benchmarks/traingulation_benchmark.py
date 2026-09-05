@@ -1,6 +1,6 @@
 from Projekt.utils.classes.Point import Point, EPSILON
 from Projekt.utils.classes.Section import Section
-from Projekt.utils.classes.Triangle import Triangle
+from Projekt.utils.Triangle import Triangle
 from Projekt.utils.triangle_operations.legality import legalize_edge, turned_points
 
 from Projekt.utils.triangle_operations.orient import orient
