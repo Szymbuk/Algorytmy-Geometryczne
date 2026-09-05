@@ -6,3 +6,6 @@ Point = Float[ndarray, "2"]
 PointsArray = Float[ndarray, "N 2"]
 
 PointIndex = NewType("PointIndex", int)
+TriangleIndex = NewType("TriangleIndex", int)
+
+EdgeAdjacencyMap = dict[tuple[PointIndex,PointIndex],list[TriangleIndex]]
