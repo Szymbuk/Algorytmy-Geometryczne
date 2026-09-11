@@ -1,10 +1,11 @@
 
 from typing import List
-from Projekt.utils.custom_types import PointsArray, TriangleIndex,Triangle
+import numpy as np
+from Projekt.utils.custom_types import PointsArray, TriangleIndex, Triangle, Point, PointIndex
 from bitalg.visualizer.main import Visualizer
 from Projekt.utils.triangle_operations.orient import orient
 
-def is_point_in_triangle(point, triangle: Triangle, points: PointsArray) -> bool:
+def is_point_in_triangle(point: Point, triangle: Triangle, points: PointsArray) -> bool:
     p1_ind, p2_ind, p3_ind = triangle
     p1,p2,p3 = points[p1_ind], points[p2_ind], points[p3_ind]
     
@@ -16,12 +17,12 @@ def is_point_in_triangle(point, triangle: Triangle, points: PointsArray) -> bool
         return True
     return False
 
-def dfs_trianglation(point, root_id: TriangleIndex, triangles: List[Triangle], child_graph: list[set[TriangleIndex]],points: PointsArray, vis: Visualizer| None = None) -> TriangleIndex:
+def dfs_trianglation(point_id: PointIndex, root_id: TriangleIndex, triangles: List[Triangle], child_graph: list[set[TriangleIndex]],points: PointsArray, vis: Visualizer| None = None) -> TriangleIndex:
 
     if child_graph[root_id] == set():
         return root_id
     for child in child_graph[root_id]:
-        if is_point_in_triangle(point, triangles[child], points):
-            return dfs_trianglation(point, child, triangles, child_graph,points, vis)
+        if is_point_in_triangle(points[point_id], triangles[child], points):
+            return dfs_trianglation(point_id, child, triangles, child_graph,points, vis)
     
-    raise RuntimeError(f"Punkt {point} poza granicami triangulacji.")
+    raise RuntimeError(f"Punkt {point_id} poza granicami triangulacji.")
