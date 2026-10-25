@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
-from Projekt.utils.custom_types import PointsArray
+from Projekt.utils.custom_types import Point
+from typing import List
 import numpy as np
 
-def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> PointsArray:
+def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> List[Point]:
     # W Jupyter Notebook odkomentuj poniższą linię (w czystym Pythonie jest zbędna dzięki plt.ion())
     # %matplotlib tk
 
@@ -55,4 +56,4 @@ def get_points_interactive(x_min=0, x_max=1000, y_min=0, y_max=1000) -> PointsAr
     plt.ion()  # Włączenie trybu interaktywnego (kluczowe dla działania draw_point)
     plt.show()
 
-    return np.array(points)
+    return points
