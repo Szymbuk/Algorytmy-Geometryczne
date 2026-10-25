@@ -18,11 +18,19 @@ def is_point_in_triangle(point: Point, triangle: Triangle, points: PointsArray) 
     return False
 
 def dfs_trianglation(point_id: PointIndex, root_id: TriangleIndex, triangles: List[Triangle], child_graph: list[set[TriangleIndex]],points: PointsArray, vis: Visualizer| None = None) -> TriangleIndex:
+    return dfs_trianglation_point(points[point_id], root_id, triangles, child_graph, points, vis)[0]
 
-    if child_graph[root_id] == set():
-        return root_id
-    for child in child_graph[root_id]:
-        if is_point_in_triangle(points[point_id], triangles[child], points):
-            return dfs_trianglation(point_id, child, triangles, child_graph,points, vis)
-    
-    raise RuntimeError(f"Punkt {point_id} poza granicami triangulacji.")
+
+def dfs_trianglation_point(point: Point, root_id: TriangleIndex, triangles: List[Triangle], child_graph: list[set[TriangleIndex]], points: PointsArray, vis: Visualizer| None = None) -> tuple[TriangleIndex, list[TriangleIndex]]:
+    visited = [root_id]
+
+    def search(triangle_id: TriangleIndex) -> TriangleIndex:
+        if child_graph[triangle_id] == set():
+            return triangle_id
+        for child in child_graph[triangle_id]:
+            if is_point_in_triangle(point, triangles[child], points):
+                visited.append(child)
+                return search(child)
+        raise RuntimeError(f"Punkt {point} poza granicami triangulacji.")
+
+    return search(root_id), visited

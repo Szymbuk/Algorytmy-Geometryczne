@@ -8,6 +8,8 @@ from Projekt.utils.custom_types import Triangle
 from Projekt.utils.triangle_operations.legality import legalize_edge, turned_points
 from Projekt.utils.triangle_operations.orient import orient
 from Projekt.utils.triangle_search.search_triangulation import find_triangle_containing_point
+from Projekt.utils.triangle_search.directed_graph_dfs import dfs_trianglation_point
+from Projekt.utils.triangle_search.jump_and_walk import jump_and_walk_point_search
 from Projekt.utils.triangle_operations.create_triangle import make_ccw_triangle
 
 
@@ -184,7 +186,6 @@ class Triangulation:
                 for edge in new_triangles_points:
                     legalize_edge(point_ind, edge, self.__triangulation, self.__adjacency_graph, self.__triangles, self.__points, build_graph, self.__children_graph, self.__vis, self.__vis_triangle_objects)
 
-        # dopisać logikę usuwania trójkątów zawierających dopisane punkty
         triangles_to_remove = []
         p1, p2, p3 = self.__triangles[TriangleIndex(0)]
         for t_id in self.__triangulation:
@@ -215,7 +216,40 @@ class Triangulation:
                 self.__vis.remove_figure(vis_initial_points)
 
     def get_triangulation(self):
-        return self.__triangulation
+        return [self.__triangles[triangle_id] for triangle_id in sorted(self.__triangulation)]
+
+    def find_triangle(self, point: Point, variant: variants  = "JaW", trace: bool = False):
+        """Zwraca aktywny trójkąt zawierający punkt, używając wybranego algorytmu."""
+        # query = np.asarray(point)
+        if point.shape != (2,):
+            raise ValueError("Punkt musi mieć dokładnie dwie współrzędne.")
+
+        selected_variant = variant or self.__variant
+        if selected_variant not in ("JaW", "Graph"):
+            raise ValueError(f'Wariant "{selected_variant}" algorytmu wyszukiwania nie istnieje.')
+
+        if selected_variant == "Graph" and not self.__children_graph[0]:
+            raise ValueError("Wariant Graph wymaga triangulacji zbudowanej z grafem dzieci.")
+
+        try:
+            if selected_variant == "JaW":
+                triangle_id, visited = jump_and_walk_point_search(point, self.__points, self.__adjacency_graph, self.__triangles)
+            else:
+                triangle_id, visited = dfs_trianglation_point(point, TriangleIndex(0), self.__triangles, self.__children_graph, self.__points)
+        except RuntimeError as error:
+            raise ValueError(f"Punkt {point} nie należy do triangulacji.") from error
+
+        if triangle_id not in self.__triangulation:
+            raise ValueError(f"Punkt {point} nie należy do triangulacji.")
+
+        result = (triangle_id, self.__triangles[triangle_id])
+        return (*result, visited) if trace else result
+
+    def get_triangles(self):
+        return self.get_triangulation()
+
+    def get_triangle_ids(self):
+        return self.__triangulation.copy()
 
     def get_initial_triangle(self, build_graph: bool) -> Triangle:
         """
