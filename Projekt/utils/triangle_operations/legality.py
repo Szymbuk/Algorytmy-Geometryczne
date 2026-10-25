@@ -2,8 +2,9 @@ from typing import List
 
 import numpy as np
 import math
-from Projekt.utils.custom_types import PointIndex, TriangleIndex, Triangle, PointsArray, EdgeAdjacencyMap, Point
+from Projekt.utils.custom_types import PointIndex, TriangleIndex, Triangle, PointsArray, EdgeAdjacencyMap, Point, EPSILON
 from Projekt.utils.triangle_operations.create_triangle import make_ccw_triangle
+from Projekt.utils.triangle_operations.orient import orient
 from bitalg.visualizer.main import Visualizer
 
 def turned_points(p1: PointIndex,p2: PointIndex,adjacency_graph: EdgeAdjacencyMap,triangles: List[Triangle]) -> tuple[PointIndex,PointIndex]:
@@ -104,6 +105,34 @@ def is_legal(point: PointIndex, sec: tuple[PointIndex, PointIndex], adjacency_gr
     Zwraca czy krawędź jest legalna, to znaczy czy mogłaby być częścią triangulacji delaunaya
     """
     i,j = sec
+    n = len(points)
+    illigal_ind = [n-1, n-2, n-3]
+
+    k,l = turned_points(i,j,adjacency_graph,triangles)
+
+    # Obrót jest możliwy tylko dla wypukłego czworokąta.
+    if orient((points[k], points[l], points[i])) * orient((points[k], points[l], points[j])) >= -EPSILON:
+        return True
+
+    # przypadki granicznego trójkąta, zgodnie z definicją zapisaną u De Berg'a.
+    # Przypadek 1
+    if i in illigal_ind and j in illigal_ind:
+        return True
+
+    # Przypadek 4: dokładnie jeden punkt specjalny w każdej parze.
+    special_ij = [index for index in (i, j) if index in illigal_ind]
+    special_kl = [index for index in (k, l) if index in illigal_ind]
+    if len(special_ij) == 1 and len(special_kl) == 1:
+        return special_ij[0] < special_kl[0]
+
+    # Przypadek 3
+    if i in illigal_ind or j in illigal_ind:
+        return False
+
+    if k in illigal_ind or l in illigal_ind:
+        return True
+
+    # Przypadek 2
     if i>j:
         i,j = j,i
     t1, t2 = tuple(adjacency_graph[(i,j)])
@@ -197,13 +226,8 @@ def legalize_edge(point: PointIndex, sec: tuple[PointIndex, PointIndex], triangu
 
         turn(sec, build_graph,triangulation,adjacency_graph,triangles,children_graph,points, vis,vis_polygons)
 
-        if i>k:
-            i,k = k,i
-        if j>k:
-            j,k = k,j
-            
-        sec1 = (i, k)
-        sec2 = (j, k)
+        sec1 = (i, k) if i < k else (k, i)
+        sec2 = (j, k) if j < k else (k, j)
 
 
         if vis is not None:
